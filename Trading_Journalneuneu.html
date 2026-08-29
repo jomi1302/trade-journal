@@ -1,0 +1,2440 @@
+<!DOCTYPE html>
+<!-- saved from url=(0058)file:///Users/joellook/Downloads/Trading_Journal_neu3.html -->
+<html lang="de" data-theme="light"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Trading Journal</title>
+<style>
+  :root {
+    --bg: #0D0F1A;
+    --surface: #151827;
+    --surface-alt: #1C2033;
+    --border: #272B40;
+    --border-strong: #363B57;
+    --text-primary: #E9EAF2;
+    --text-muted: #8A8FA8;
+    --text-faint: #575C77;
+    --green: #3DD598;
+    --green-bg: #163A2E;
+    --green-bg-strong: #1B4636;
+    --red: #FF6B81;
+    --red-bg: #3B1C25;
+    --red-bg-strong: #48222E;
+    --amber: #F2C463;
+    --amber-bg: #3A331B;
+    --accent: #8C6CF5;
+    --accent-strong: #A489FF;
+    --accent-bg: rgba(140,108,245,0.16);
+    --shadow: none;
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  }
+  html[data-theme="light"] {
+    --bg: #F5F5F9;
+    --surface: #FFFFFF;
+    --surface-alt: #F1F1F6;
+    --border: #E5E5EE;
+    --border-strong: #D6D6E4;
+    --text-primary: #1C1D2B;
+    --text-muted: #6B6C80;
+    --text-faint: #9A9BAC;
+    --green: #2FBF85;
+    --green-bg: #E6F8F1;
+    --green-bg-strong: #C9F1E2;
+    --red: #EF5D77;
+    --red-bg: #FDEAEE;
+    --red-bg-strong: #FBD3DC;
+    --amber: #E3A93C;
+    --amber-bg: #FBF1DD;
+    --accent: #6C4FE0;
+    --accent-strong: #7C5CFC;
+    --accent-bg: rgba(108,79,224,0.10);
+    --shadow: 0 1px 2px rgba(20,20,40,0.04), 0 1px 8px rgba(20,20,40,0.03);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+  }
+  button { font-family: var(--font-sans); cursor: pointer; }
+  input, select, textarea {
+    font-family: var(--font-sans);
+    background: var(--surface-alt);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 8px 10px;
+    color: var(--text-primary);
+    font-size: 13px;
+    width: 100%;
+    outline: none;
+  }
+  input[type="number"] { font-family: var(--font-mono); }
+  textarea { resize: vertical; }
+  html, body { font-size: 16px; }
+  #app { max-width: 1320px; margin: 0 auto; padding: 32px 28px 64px; }
+  .top-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 26px; }
+  .header-eyebrow {
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent); font-weight: 600; margin-bottom: 6px;
+  }
+  h1 { margin: 0; font-size: 29px; font-weight: 600; letter-spacing: -0.01em; }
+  .theme-toggle {
+    display: inline-flex; align-items: center; gap: 6px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 999px; padding: 6px 6px; box-shadow: var(--shadow);
+  }
+  .theme-btn {
+    background: transparent; border: none; border-radius: 999px; padding: 6px 12px;
+    font-size: 12px; font-weight: 600; color: var(--text-faint);
+  }
+  .theme-btn.active { background: var(--accent-bg); color: var(--accent-strong); }
+  .card {
+    background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow);
+    border-radius: 12px; padding: 18px; margin-bottom: 22px;
+  }
+  .stats-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 14px; margin-bottom: 22px;
+  }
+  .stat-card {
+    background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow);
+    border-radius: 12px; padding: 18px 20px;
+  }
+  .stat-label { font-size: 12.5px; color: var(--text-faint); margin-bottom: 10px; display:flex; align-items:center; gap:6px; }
+  .stat-value { font-family: var(--font-mono); font-size: 25px; font-weight: 700; }
+  .stat-gauge-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .gauge-caption { display:flex; justify-content:space-between; font-size:10.5px; color:var(--text-faint); margin-top:4px; }
+  .bar-track { height: 8px; border-radius: 5px; background: var(--surface-alt); overflow: hidden; display:flex; margin-top:10px; }
+  .bar-seg-win { background: var(--green); height: 100%; }
+  .bar-seg-loss { background: var(--red); height: 100%; }
+  .bar-caption { display:flex; justify-content:space-between; font-size:11px; margin-top:6px; font-family: var(--font-mono); }
+  .cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
+  .cal-title { font-size: 15px; font-weight: 600; }
+  .nav-btn {
+    background: var(--surface-alt); border: 1px solid var(--border); border-radius: 6px;
+    color: var(--text-muted); padding: 6px 10px; font-size: 12px; display: inline-flex; align-items: center; gap: 4px;
+  }
+  .nav-row { display: flex; align-items: center; gap: 8px; }
+  .weekday-row, .day-grid {
+    display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px;
+  }
+  .weekday-row { margin-bottom: 6px; }
+  .weekday { font-size: 11px; color: var(--text-faint); text-align: center; }
+  .day-cell {
+    aspect-ratio: 1; min-height: 86px; border-radius: 8px; border: 1px solid var(--border);
+    display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start;
+    padding: 6px 7px; background: var(--surface-alt); color: var(--text-primary); text-align: left;
+  }
+  .day-cell.selected { border: 1.5px solid var(--accent); }
+  .day-num { font-size: 11px; color: var(--text-faint); }
+  .day-r { font-family: var(--font-mono); font-weight: 700; font-size: 13px; margin-top: 2px; }
+  .day-count { font-size: 10px; color: var(--text-muted); margin-top: auto; }
+  .day-wl { font-size: 10px; color: var(--text-faint); }
+  .legend-row { display: flex; gap: 16px; margin-top: 14px; font-size: 11px; color: var(--text-muted); flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-dot { width: 9px; height: 9px; border-radius: 3px; display: inline-block; }
+  .panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 8px; }
+  .panel-title { font-size: 15px; font-weight: 600; }
+  .icon-btn { background: transparent; border: none; color: var(--text-faint); padding: 4px; display: flex; }
+  .trade-item {
+    border: 1px solid var(--border); border-radius: 10px; padding: 12px;
+    background: var(--surface-alt); margin-bottom: 10px;
+  }
+  .trade-item-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+  .trade-badges { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .r-value { font-family: var(--font-mono); font-weight: 700; font-size: 15.5px; }
+  .pill { font-size: 12.5px; padding: 3px 9px; border-radius: 999px; }
+  .pill-symbol { background: var(--border); color: var(--text-muted); }
+  .pill-long { background: rgba(95,227,155,0.12); color: var(--green); }
+  .pill-short { background: rgba(124,140,240,0.14); color: var(--accent); }
+  .trade-notes { font-size: 13px; color: var(--text-muted); margin-top: 8px; }
+  .trade-shot { max-width: 100%; max-height: 220px; border-radius: 8px; border: 1px solid var(--border); cursor: zoom-in; display: block; margin-top: 10px; }
+  .form-section-title {
+    font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 12px;
+    text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .field-label {
+    display: block; font-size: 11px; color: var(--text-faint); margin-bottom: 5px;
+    text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .form-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin-bottom: 12px;
+  }
+  .dropzone {
+    border: 1.5px dashed var(--border); border-radius: 8px; padding: 18px; text-align: center;
+    background: var(--surface-alt); cursor: pointer; color: var(--text-faint); font-size: 13px;
+  }
+  .dropzone.has-image { padding: 8px; text-align: left; }
+  .primary-btn {
+    display: inline-flex; align-items: center; gap: 6px; background: var(--accent); color: #FFFFFF;
+    border: none; border-radius: 8px; padding: 9px 18px; font-size: 14px; font-weight: 600;
+  }
+  html[data-theme="dark"] .primary-btn { color: #12142A; }
+  .error-text { color: var(--red); font-size: 13px; margin-bottom: 12px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { text-align: right; padding: 8px 10px; color: var(--text-faint); font-weight: 500; font-size: 11px;
+       text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  th:first-child { text-align: left; }
+  td { padding: 9px 10px; color: var(--text-primary); white-space: nowrap; border-bottom: 1px solid var(--border); }
+  .empty-note { padding: 24px 4px; color: var(--text-faint); font-size: 13px; }
+  .footer-row { text-align: right; font-size: 12px; }
+  .link-btn { background: none; border: none; color: var(--text-faint); font-size: 12px; text-decoration: underline; padding: 0; }
+  #lightbox {
+    position: fixed; inset: 0; background: rgba(5,6,12,0.88); display: none;
+    align-items: center; justify-content: center; z-index: 1000; padding: 24px; cursor: zoom-out;
+  }
+  #lightbox img { max-width: 100%; max-height: 100%; border-radius: 8px; }
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(5,6,12,0.6); z-index: 1001;
+    display: flex; align-items: flex-start; justify-content: center;
+    padding: 40px 16px; overflow-y: auto;
+  }
+  .modal-card {
+    background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow);
+    border-radius: 12px; padding: 20px; max-width: 520px; width: 100%;
+  }
+  .save-error { background: rgba(240,135,154,0.1); border: 1px solid var(--red-bg-strong); color: var(--red);
+    border-radius: 8px; padding: 10px 14px; font-size: 13px; margin-bottom: 20px; }
+  .account-tabs { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .account-tab {
+    background: var(--surface-alt); border: 1px solid var(--border); border-radius: 999px;
+    color: var(--text-muted); padding: 7px 14px; font-size: 13px; font-weight: 500;
+  }
+  .account-tab.active { background: var(--accent-bg); border-color: var(--accent); color: var(--accent-strong); }
+  .account-tab.usd-tab { border-style: solid; }
+  .account-tab-add { color: var(--text-faint); border-style: dashed; }
+  .account-group-label { font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-faint); margin: 14px 0 8px; }
+  .filter-row { display: flex; gap: 14px; flex-wrap: wrap; align-items: flex-end; }
+  .filter-row > div { min-width: 170px; flex: 1; }
+  .pill-setup { background: rgba(227,193,95,0.14); color: var(--amber); }
+  .pill-account { background: var(--border); color: var(--text-muted); }
+  .pill-time { background: rgba(140,108,245,0.12); color: var(--accent-strong); }
+  .section-sub { font-size: 12px; color: var(--text-faint); margin: -4px 0 14px; }
+
+  .chip-field { margin-bottom: 14px; }
+  .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    background: var(--surface-alt); border: 1px solid var(--border); border-radius: 8px;
+    color: var(--text-muted); padding: 7px 13px; font-size: 13px; font-weight: 500;
+    transition: border-color .12s, color .12s, background .12s;
+  }
+  .chip:hover { border-color: var(--border-strong); color: var(--text-primary); }
+  .chip.active { background: var(--accent-bg); border-color: var(--accent); color: var(--accent-strong); font-weight: 600; }
+  .chip-add { color: var(--text-faint); border-style: dashed; }
+  .chip-add:hover { border-color: var(--accent); color: var(--accent-strong); }
+
+  .cal-title-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .compact-select {
+    width: auto; padding: 6px 10px; font-size: 12.5px; font-weight: 600;
+    background: var(--surface-alt); border: 1px solid var(--border); border-radius: 7px;
+  }
+  html[data-theme="dark"] input[type="date"].compact-select { color-scheme: dark; }
+  html[data-theme="light"] input[type="date"].compact-select { color-scheme: light; }
+
+  .account-manage { margin-top: 14px; border-top: 1px solid var(--border); padding-top: 14px; }
+  .account-manage-row {
+    display: flex; align-items: center; gap: 10px; padding: 8px 0; flex-wrap: wrap;
+    border-bottom: 1px solid var(--border);
+  }
+  .account-manage-row:last-child { border-bottom: none; }
+  .account-manage-name { flex: 0 0 170px; font-size: 13px; font-weight: 500; }
+  .account-manage-row select { max-width: 220px; font-size: 12.5px; padding: 6px 8px; }
+  .account-manage-hint { font-size: 11px; color: var(--text-faint); margin-top: 10px; }
+  .account-usd-box { width: 100%; margin-top: 8px; padding: 10px 12px; background: var(--surface-alt); border-radius: 8px; border: 1px solid var(--border); }
+  .wd-row { display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; padding: 4px 0; color: var(--text-muted); }
+
+  /* Yearly calendar */
+  .yearcal-tabs { display: flex; gap: 6px; }
+  .yearcal-tab { background: var(--surface-alt); border: 1px solid var(--border); border-radius: 999px; padding: 6px 14px; font-size: 12.5px; font-weight: 600; color: var(--text-faint); }
+  .yearcal-tab.active { background: var(--accent-bg); border-color: var(--accent); color: var(--accent-strong); }
+  .yearcal-grid { display: grid; grid-template-columns: repeat(14, 1fr); gap: 8px; overflow-x: auto; }
+  .yearcal-head { font-size: 11px; color: var(--text-faint); text-align: center; padding-bottom: 4px; }
+  .yearcal-cell {
+    border-radius: 10px; padding: 14px 6px; text-align: center; min-height: 74px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+    background: var(--surface-alt); border: 1px solid var(--border); font-size: 12px;
+  }
+  .yearcal-cell.year-cell { background: var(--surface); font-weight: 700; font-size: 15px; cursor: default; }
+  .yearcal-cell.clickable { cursor: pointer; }
+  .yearcal-cell.clickable:hover { border-color: var(--border-strong); }
+  .yearcal-cell .yc-val { font-weight: 700; font-family: var(--font-mono); font-size: 13px; }
+  .yearcal-cell .yc-sub { font-size: 10px; opacity: .85; }
+
+  /* Gauges */
+  .gauge-wrap { position: relative; width: 124px; height: 71px; }
+  .gauge-num { position: absolute; bottom: 0; left: 0; right: 0; text-align: center; font-family: var(--font-mono); font-weight: 700; font-size: 19px; }
+  .donut-wrap { position: relative; width: 90px; height: 90px; }
+  .donut-num { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-weight: 700; font-size: 16px; }
+  .gauge-wrap svg, .donut-wrap svg { width: 100%; height: 100%; display: block; }
+
+  /* Performance chart */
+  .perf-svg-wrap { width: 100%; overflow-x: auto; }
+
+  /* Account comparison */
+  .compare-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+  .compare-card {
+    background: var(--surface-alt); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px;
+  }
+  .compare-card-title { font-size: 14px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .compare-stat { display: flex; justify-content: space-between; align-items: center; font-size: 13px; padding: 5px 0; border-bottom: 1px solid var(--border); }
+  .compare-stat:last-child { border-bottom: none; }
+  .compare-stat span { color: var(--text-faint); }
+  .compare-stat b { font-family: var(--font-mono); font-weight: 700; }
+
+  /* Risikomanagement */
+  .risk-current { background: var(--accent-bg); border: 1px solid var(--accent); border-radius: 10px; padding: 16px 20px; }
+  .risk-current-label { font-size: 12.5px; color: var(--text-muted); margin-bottom: 6px; }
+  .risk-current-value { font-family: var(--font-mono); font-size: 30px; font-weight: 700; color: var(--accent-strong); }
+  .risk-current-sub { font-size: 12.5px; color: var(--text-faint); margin-top: 8px; }
+  tr.risk-row-active td { background: var(--accent-bg); font-weight: 600; }
+
+  /* Mobile / iPhone adjustments */
+  @media (max-width: 640px) {
+    #app { padding: max(16px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) 48px max(12px, env(safe-area-inset-left)); }
+    .top-row { flex-direction: column; align-items: flex-start; gap: 12px; }
+    h1 { font-size: 22px; }
+    .theme-toggle { align-self: flex-start; }
+    .card { padding: 14px; border-radius: 10px; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .stat-card { padding: 12px 14px; }
+    .stat-value { font-size: 19px; }
+    .gauge-wrap { width: 92px; height: 53px; }
+    .gauge-wrap svg { width: 92px; height: 53px; }
+    .gauge-num { font-size: 15px; }
+    .donut-wrap { width: 66px; height: 66px; }
+    .donut-wrap svg { width: 66px; height: 66px; }
+    .panel-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .panel-header > div[style] { width: 100%; }
+    .account-tabs { gap: 6px; }
+    .account-tab { padding: 7px 11px; font-size: 12.5px; }
+    .filter-row { flex-direction: column; align-items: stretch; }
+    .filter-row > div { min-width: 0; }
+    .cal-header { flex-direction: column; align-items: flex-start; }
+    .nav-row { width: 100%; justify-content: space-between; }
+    .weekday-row, .day-grid { gap: 4px; }
+    .day-cell { min-height: 52px; padding: 4px 5px; }
+    .day-num { font-size: 10px; }
+    .day-r { font-size: 11px; }
+    .day-count, .day-wl { font-size: 9px; }
+    .yearcal-grid { grid-template-columns: repeat(14, minmax(48px, 1fr)); }
+    .yearcal-cell { min-height: 58px; padding: 8px 4px; }
+    table { display: block; overflow-x: auto; white-space: nowrap; }
+    .compare-grid { grid-template-columns: 1fr; }
+    .form-grid { grid-template-columns: 1fr; }
+    .account-manage-name { flex: 0 0 auto; }
+  }
+</style>
+</head>
+<body>
+<div id="app"><div class="top-row"><div><div class="header-eyebrow">Handelsjournal</div><h1>Trading Journal</h1></div><div class="theme-toggle"><button type="button" class="theme-btn" data-action="set-theme" data-theme="dark">🌙 Dunkel</button><button type="button" class="theme-btn active" data-action="set-theme" data-theme="light">☀️ Hell</button></div></div><div class="card"><div class="panel-header"><div class="panel-title">Obsidian-Verbindung</div><button class="icon-btn" data-action="obs-toggle-settings" aria-label="Einstellungen">⚙️</button></div><div style="color:var(--green); font-size:13px">✓ Verbunden mit Obsidian · 19 Trade(s) geladen · <button class="link-btn" data-action="obs-reload">Neu laden</button></div></div><div class="card" style="padding:14px 18px"><div class="panel-header" style="margin-bottom:10px"><div class="panel-title">Account</div><button class="icon-btn" data-action="toggle-account-manage" aria-label="Accounts verwalten">⚙️</button></div><div class="account-tabs"><button type="button" class="account-tab active" data-action="select-account" data-account="all">Alle Accounts</button><button type="button" class="account-tab" data-action="select-account" data-account="Live Markt">Live Markt</button><button type="button" class="account-tab" data-action="select-account" data-account="Backtesting">Backtesting</button><button type="button" class="account-tab account-tab-add" data-action="add-account">+ Account (R)</button></div><div class="account-group-label">Livemarkt (Unterkonten in $)</div><div class="account-tabs"><button type="button" class="account-tab usd-tab" data-action="select-account" data-account="100K Alpha Capital">100K Alpha Capital</button><button type="button" class="account-tab account-tab-add" data-action="add-livemarkt-account">+ Livemarkt-Unterkonto</button></div></div><div class="card filter-row"><div><label class="field-label">Nach Symbol filtern</label><select id="filter-symbol"><option value="all" selected="">Alle Symbole</option><option value="EURUSD">EURUSD</option><option value="GBPUSD">GBPUSD</option><option value="USDJPY">USDJPY</option><option value="XAUUSD">XAUUSD</option></select></div><div><label class="field-label">Nach Setup filtern</label><select id="filter-setup"><option value="all" selected="">Alle Setups</option><option value="Range Play">Range Play</option><option value="Range Play im Trend">Range Play im Trend</option><option value="Range Break-Out">Range Break-Out</option></select></div></div><div class="stats-grid"><div class="stat-card"><div class="stat-label">Netto R</div><div class="stat-value" style="color:var(--text-primary)">0.00R</div><div class="gauge-caption"><span>0 Trades</span></div></div><div class="stat-card"><div class="stat-label">Trade Win-%</div><div class="stat-gauge-row"><div class="gauge-wrap"><svg viewBox="0 0 108 62" width="108" height="62"><path d="M 12.00 54.00 A 42 42 0 0 1 96.00 54.00" stroke="var(--border)" stroke-width="11" fill="none" stroke-linecap="round"></path></svg><div class="gauge-num">0%</div></div></div><div class="gauge-caption"><span style="color:var(--green)">0 W</span><span style="color:var(--amber)">0 BE</span><span style="color:var(--red)">0 L</span></div></div><div class="stat-card"><div class="stat-label">Tage Win-%</div><div class="stat-gauge-row"><div class="gauge-wrap"><svg viewBox="0 0 108 62" width="108" height="62"><path d="M 12.00 54.00 A 42 42 0 0 1 96.00 54.00" stroke="var(--border)" stroke-width="11" fill="none" stroke-linecap="round"></path></svg><div class="gauge-num">0%</div></div></div><div class="gauge-caption"><span style="color:var(--green)">0 T</span><span style="color:var(--amber)">0 BE</span><span style="color:var(--red)">0 T</span></div></div><div class="stat-card"><div class="stat-label">Profit-Faktor</div><div class="stat-gauge-row"><div class="donut-wrap"><svg viewBox="0 0 78 78" width="78" height="78"><circle cx="39" cy="39" r="30" stroke="var(--border)" stroke-width="9" fill="none"></circle><circle cx="39" cy="39" r="30" stroke="var(--accent)" stroke-width="9" fill="none" stroke-dasharray="0.0 188.5" stroke-linecap="round" transform="rotate(-90 39 39)"></circle></svg><div class="donut-num">0.00</div></div></div></div><div class="stat-card"><div class="stat-label">Ø Win / Ø Loss</div><div class="bar-track"><div class="bar-seg-win" style="width:0.0%"></div><div class="bar-seg-loss" style="width:100.0%"></div></div><div class="bar-caption"><span style="color:var(--green)">0.00R</span><span style="color:var(--red)">0.00R</span></div></div></div><div class="card"><div class="form-section-title" style="margin-bottom:14px">Performance</div><div class="empty-note">Noch keine Trades für den Performance-Chart.</div></div><div class="card"><div class="cal-header"><div class="panel-title">Jahreskalender</div><div class="yearcal-tabs"><button type="button" class="yearcal-tab" data-action="yearcal-view" data-view="winrate">Win-Rate</button><button type="button" class="yearcal-tab active" data-action="yearcal-view" data-view="pnl">R</button><button type="button" class="yearcal-tab" data-action="yearcal-view" data-view="trades">Trades</button></div><div class="nav-row"><button class="nav-btn" data-action="yearcal-prev">←</button><button class="nav-btn" data-action="yearcal-next">→</button></div></div><div class="yearcal-grid"><div class="yearcal-head">Jahr</div><div class="yearcal-head">Jan</div><div class="yearcal-head">Feb</div><div class="yearcal-head">Mär</div><div class="yearcal-head">Apr</div><div class="yearcal-head">Mai</div><div class="yearcal-head">Jun</div><div class="yearcal-head">Jul</div><div class="yearcal-head">Aug</div><div class="yearcal-head">Sep</div><div class="yearcal-head">Okt</div><div class="yearcal-head">Nov</div><div class="yearcal-head">Dez</div><div class="yearcal-head">Total</div><div class="yearcal-cell year-cell">2026</div><div class="yearcal-cell clickable" data-action="yearcal-goto-month" data-month="0"><span style="color:var(--text-faint)">--</span></div><div class="yearcal-cell clickable" data-action="yearcal-goto-month" data-month="1"><span style="color:var(--text-faint)">--</span></div><div class="yearcal-cell clickable" data-action="yearcal-goto-month" data-month="2"><span style="color:var(--text-faint)">--</span></div><div class="yearcal-cell clickable" data-action="yearcal-goto-month" data-month="3"><span style="color:var(--text-faint)">--</span></div><div class="yearcal-cell clickable" data-action="yearcal-goto-month" data-month="4"><span style="color:var(--text-faint)">--</span></div><div class="yearcal-cell clickable" data-action="yearcal-goto-month" data-month="5"><span style="color:var(--text-faint)">--</span></div><div class="yearcal-cell clickable" data-action="yearcal-goto-month" data-month="6"><span style="color:var(--text-faint)">--</span></div><div class="yearcal-cell clickable" data-action="yearcal-goto-month" data-month="7"><span style="color:var(--text-faint)">--</span></div><div class="yearcal-cell clickable" data-action="yearcal-goto-month" data-month="8"><span style="color:var(--text-faint)">--</span></div><div class="yearcal-cell clickable" data-action="yearcal-goto-month" data-month="9"><span style="color:var(--text-faint)">--</span></div><div class="yearcal-cell clickable" data-action="yearcal-goto-month" data-month="10"><span style="color:var(--text-faint)">--</span></div><div class="yearcal-cell clickable" data-action="yearcal-goto-month" data-month="11"><span style="color:var(--text-faint)">--</span></div><div class="yearcal-cell"><span style="color:var(--text-faint)">--</span></div></div></div><div class="card"><div class="cal-header"><div class="cal-title-row"><select id="cal-month-select" class="compact-select" aria-label="Monat wählen"><option value="0">Januar</option><option value="1">Februar</option><option value="2">März</option><option value="3">April</option><option value="4">Mai</option><option value="5">Juni</option><option value="6">Juli</option><option value="7" selected="">August</option><option value="8">September</option><option value="9">Oktober</option><option value="10">November</option><option value="11">Dezember</option></select><select id="cal-year-select" class="compact-select" aria-label="Jahr wählen"><option value="2023">2023</option><option value="2024">2024</option><option value="2025">2025</option><option value="2026" selected="">2026</option><option value="2027">2027</option></select><input type="date" id="cal-jump" class="compact-select" aria-label="Datum direkt wählen" value=""></div><div class="nav-row"><button class="nav-btn" data-action="prev-month">←</button><button class="nav-btn" data-action="today">Heute</button><button class="nav-btn" data-action="next-month">→</button></div></div><div class="weekday-row"><div class="weekday">Mo</div><div class="weekday">Di</div><div class="weekday">Mi</div><div class="weekday">Do</div><div class="weekday">Fr</div><div class="weekday">Sa</div><div class="weekday">So</div></div><div class="day-grid"><div></div><div></div><div></div><div></div><div></div><button class="day-cell" style="background:var(--surface-alt);border:1px solid var(--border);" data-action="select-day" data-date="2026-08-01"><span class="day-num">1</span></button><button class="day-cell" style="background:var(--surface-alt);border:1px solid var(--border);" data-action="select-day" data-date="2026-08-02"><span class="day-num">2</span></button><button class="day-cell" style="background:var(--surface-alt);border:1px solid var(--border);" data-action="select-day" data-date="2026-08-03"><span class="day-num">3</span></button><button class="day-cell" style="background:var(--surface-alt);border:1px solid var(--border);" data-action="select-day" data-date="2026-08-04"><span class="day-num">4</span></button><button class="day-cell" style="background:var(--surface-alt);border:1px solid var(--border);" data-action="select-day" data-date="2026-08-05"><span class="day-num">5</span></button><button class="day-cell" style="background:var(--surface-alt);border:1px solid var(--border);" data-action="select-day" data-date="2026-08-06"><span class="day-num">6</span></button><button class="day-cell" style="background:var(--surface-alt);border:1px solid var(--border);" data-action="select-day" data-date="2026-08-07"><span class="day-num">7</span></button><button class="day-cell" style="background:var(--surface-alt);border:1px solid var(--border);" data-action="select-day" data-date="2026-08-08"><span class="day-num">8</span></button><button class="day-cell" style="background:var(--surface-alt);border:1px solid var(--border);" data-action="select-day" data-date="2026-08-09"><span class="day-num">9</span></button><button class="day-cell" style="background:var(--surface-alt);border:1px solid var(--border);" data-action="select-day" data-date="2026-08-10"><span class="day-num">10</span></button><button class="day-cell" style="background:var(--surface-alt);border:1px solid var(--border);" data-action="select-day" data-date="2026-08-11"><span class="day-num">11</span></button><button class="day-cell" style="background:var(--surface-alt);border:1px solid var(--border);" data-action="select-day" data-date="2026-08-12"><span class="day-num">12</span></button><button class="day-cell" style="background:var(--surface-alt);border:1px solid var(--border);" data-action="select-day" data-date="2026-08-13"><span class="day-num">13</span></button><button class="day-cell" style="background:var(--surface-alt);border:1px solid var(--border);" data-action="select-day" data-date="2026-08-14"><span class="day-num">14</span></button><button class="day-cell" style="background:var(--surface-alt);border:1px solid var(--border);" data-action="select-day" data-date="2026-08-15"><span class="day-num">15</span></button><button class="day-cell" style="background:var(--surface-alt);border:1px solid var(--border);" data-action="select-day" data-date="2026-08-16"><span class="day-num">16</span></button><button class="day-cell" style="background:var(--surface-alt);border:1px solid var(--border);" data-action="select-day" data-date="2026-08-17"><span class="day-num">17</span></button><button class="day-cell" style="background:var(--surface-alt);border:1px solid var(--border);" data-action="select-day" data-date="2026-08-18"><span class="day-num">18</span></button><button class="day-cell" style="background:var(--surface-alt);border:1px solid var(--border);" data-action="select-day" data-date="2026-08-19"><span class="day-num">19</span></button><button class="day-cell" style="background:var(--surface-alt);border:1px solid var(--border);" data-action="select-day" data-date="2026-08-20"><span class="day-num">20</span></button><button class="day-cell" style="background:var(--surface-alt);border:1px solid var(--border);" data-action="select-day" data-date="2026-08-21"><span class="day-num">21</span></button><button class="day-cell" style="background:var(--surface-alt);border:1px solid var(--border);" data-action="select-day" data-date="2026-08-22"><span class="day-num">22</span></button><button class="day-cell" style="background:var(--surface-alt);border:1px solid var(--border);" data-action="select-day" data-date="2026-08-23"><span class="day-num">23</span></button><button class="day-cell" style="background:var(--surface-alt);border:1px solid var(--border);" data-action="select-day" data-date="2026-08-24"><span class="day-num">24</span></button><button class="day-cell" style="background:var(--surface-alt);border:1px solid var(--border);" data-action="select-day" data-date="2026-08-25"><span class="day-num">25</span></button><button class="day-cell" style="background:var(--surface-alt);border:1px solid var(--border);" data-action="select-day" data-date="2026-08-26"><span class="day-num">26</span></button><button class="day-cell" style="background:var(--surface-alt);border:1px solid var(--border);" data-action="select-day" data-date="2026-08-27"><span class="day-num">27</span></button><button class="day-cell" style="background:var(--surface-alt);border:1px solid var(--border);" data-action="select-day" data-date="2026-08-28"><span class="day-num">28</span></button><button class="day-cell" style="background:var(--surface-alt);border:1px solid var(--border);" data-action="select-day" data-date="2026-08-29"><span class="day-num">29</span></button><button class="day-cell" style="background:var(--surface-alt);border:1px solid var(--border);" data-action="select-day" data-date="2026-08-30"><span class="day-num">30</span></button><button class="day-cell" style="background:var(--surface-alt);border:1px solid var(--border);" data-action="select-day" data-date="2026-08-31"><span class="day-num">31</span></button></div><div class="legend-row"><span class="legend-item"><span class="legend-dot" style="background:var(--green)"></span>Gewinntag</span><span class="legend-item"><span class="legend-dot" style="background:var(--red)"></span>Verlusttag</span><span class="legend-item"><span class="legend-dot" style="background:var(--amber)"></span>Break-Even</span><span class="legend-item"><span class="legend-dot" style="background:var(--text-faint)"></span>Kein Trade</span></div></div><div class="card"><div class="form-section-title" style="margin-bottom:14px">Monatsauswertung</div><div class="empty-note">Noch keine Trades – die Monatsauswertung erscheint nach deinem ersten Eintrag.</div></div><div class="card"><div class="form-section-title" style="margin-bottom:4px">Auswertung nach Uhrzeit</div><div class="section-sub">Welche Uhrzeit hat wie viel R gebracht.</div><div class="empty-note">Noch keine Trades mit hinterlegter Uhrzeit.</div></div><div class="card"><div class="form-section-title" style="margin-bottom:14px">Auswertung nach Setup</div><div class="empty-note">Noch keine Trades für diese Auswahl.</div></div><div class="card"><div class="form-section-title" style="margin-bottom:14px">Auswertung nach Symbol</div><div class="empty-note">Noch keine Trades für diese Auswahl.</div></div><div class="footer-row"><button class="link-btn" data-action="ask-clear">Alle Daten löschen</button></div></div>
+<div id="lightbox"></div>
+<div id="edit-modal"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  var OBS_SETTINGS_KEY = "tj_obs_settings";
+  var LISTS_KEY = "tj_lists";
+  var THEME_KEY = "tj_theme";
+
+  var DEFAULT_SYMBOLS = ["EURUSD", "GBPUSD", "USDJPY", "XAUUSD"];
+  var DEFAULT_SETUPS = ["Range Play", "Range Play im Trend", "Range Break-Out"];
+  var DEFAULT_ACCOUNTS = [{ name: "Backtesting", defaultSymbol: "", type: "r" }];
+  var LIVEMARKT_GROUP = "Livemarkt";
+
+  var MONTH_NAMES = ["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
+  var MONTH_SHORT = ["Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"];
+  var WEEKDAYS = ["Mo","Di","Mi","Do","Fr","Sa","So"];
+
+  function pad2(n) { return String(n).padStart(2, "0"); }
+  var TIME_SLOTS = (function () {
+    var arr = [];
+    for (var h = 8; h < 12; h++) {
+      arr.push(pad2(h) + ":00–" + pad2(h) + ":30");
+      arr.push(pad2(h) + ":30–" + pad2(h + 1) + ":00");
+    }
+    return arr;
+  })();
+
+  var state = {
+    trades: [],
+    calMonth: (function () { var d = new Date(); return { y: d.getFullYear(), m: d.getMonth() }; })(),
+    yearCalYear: new Date().getFullYear(),
+    yearCalView: "pnl", // pnl | winrate | trades
+    selectedDate: null,
+    formShot: null,
+    confirmClear: false,
+    saveError: "",
+    settings: loadSettings(),
+    settingsOpen: false,
+    syncStatus: "idle",
+    syncError: "",
+    shotCache: {},
+    lists: loadLists(),
+    filters: { account: "all", symbol: "all", setup: "all", unit: "r" },
+    accountManageOpen: false,
+    compare: { open: false, accounts: [] },
+    theme: loadTheme(),
+    formSelections: { symbol: "", setup: "", account: "", time: "" },
+    editTradeId: null,
+    editShot: null,
+    editRemoveShot: false
+  };
+  state.settingsOpen = !settingsReady();
+
+  function uid() { return Date.now() + "-" + Math.random().toString(36).slice(2, 9); }
+
+  // ---------- Theme ----------
+  function loadTheme() {
+    try { return localStorage.getItem(THEME_KEY) === "light" ? "light" : "dark"; } catch (e) { return "dark"; }
+  }
+  function persistTheme(t) { try { localStorage.setItem(THEME_KEY, t); } catch (e) {} }
+  function applyTheme() { document.documentElement.setAttribute("data-theme", state.theme); }
+
+  // ---------- Custom lists (Symbole / Setups / Accounts) ----------
+
+  function normalizeAccounts(list) {
+    if (!list || !list.length) return DEFAULT_ACCOUNTS.slice().map(function (a) {
+      return { name: a.name, defaultSymbol: a.defaultSymbol, type: a.type || "r" };
+    });
+    return list.map(function (a) {
+      if (typeof a === "string") return { name: a, defaultSymbol: "", type: "r" };
+      return {
+        name: a.name || "",
+        defaultSymbol: a.defaultSymbol || "",
+        type: a.type === "usd" ? "usd" : "r",
+        group: a.type === "usd" ? LIVEMARKT_GROUP : "",
+        startingCapital: Number(a.startingCapital) || 0,
+        withdrawals: Array.isArray(a.withdrawals) ? a.withdrawals : [],
+        riskModel: a.riskModel === true
+      };
+    }).filter(function (a) { return a.name; });
+  }
+
+  function loadLists() {
+    try {
+      var raw = localStorage.getItem(LISTS_KEY);
+      var s = raw ? JSON.parse(raw) : {};
+      return {
+        symbols: (s.symbols && s.symbols.length) ? s.symbols : DEFAULT_SYMBOLS.slice(),
+        setups: (s.setups && s.setups.length) ? s.setups : DEFAULT_SETUPS.slice(),
+        accounts: normalizeAccounts(s.accounts)
+      };
+    } catch (e) {
+      return { symbols: DEFAULT_SYMBOLS.slice(), setups: DEFAULT_SETUPS.slice(), accounts: normalizeAccounts(null) };
+    }
+  }
+
+  function persistLists() {
+    try { localStorage.setItem(LISTS_KEY, JSON.stringify(state.lists)); } catch (e) {}
+  }
+
+  function findAccount(name) {
+    return state.lists.accounts.find(function (a) { return a.name === name; });
+  }
+
+  function accountNames() {
+    return state.lists.accounts.map(function (a) { return a.name; });
+  }
+
+  function isUsdAccount(name) {
+    var a = findAccount(name);
+    return !!(a && a.type === "usd");
+  }
+
+  function accountBalance(acc) {
+    var pnlSum = state.trades.reduce(function (s, t) {
+      if (t.account !== acc.name) return s;
+      return s + (Number(t.pnl) || 0) - (Number(t.commission) || 0);
+    }, 0);
+    var wdSum = (acc.withdrawals || []).reduce(function (s, w) { return s + (Number(w.amount) || 0); }, 0);
+    return (Number(acc.startingCapital) || 0) + pnlSum - wdSum;
+  }
+
+  // ---------- Gestaffeltes Risikomanagement (nur Live-/$-Accounts) ----------
+  // Start-Stufe: 1% Risiko vom Startkapital, 4 Trades, danach halbiert sich
+  // das Risiko alle 2 Trades (Stufe 1: 0,5%, Stufe 2: 0,25%, ...). Die
+  // Kontostand-Schwelle jeder Stufe ergibt sich aus dem kumulierten Verlust
+  // (Risiko × max. Trades) der jeweiligen Stufe.
+  function riskStages(startingCapital) {
+    var SC = Number(startingCapital) || 0;
+    if (SC <= 0) return [];
+    var stages = [];
+    var startRisk = SC * 0.01;
+    var high = SC;
+    var low = SC - startRisk * 4;
+    stages.push({ label: "Start", high: high, low: low, risk: startRisk, riskPct: 1, maxTrades: 4, cumLoss: startRisk * 4 });
+    var prevLow = low;
+    for (var k = 1; k <= 20; k++) {
+      var risk = SC * 0.01 / Math.pow(2, k);
+      if (risk < 0.01) break;
+      var stageHigh = prevLow;
+      var stageLow = prevLow - risk * 2;
+      stages.push({ label: "Stufe " + k, high: stageHigh, low: stageLow, risk: risk, riskPct: 1 / Math.pow(2, k), maxTrades: 2, cumLoss: risk * 2 });
+      prevLow = stageLow;
+    }
+    return stages;
+  }
+
+  function findStageIndex(stages, balance) {
+    if (!stages.length) return -1;
+    if (balance >= stages[0].high) return 0;
+    for (var i = 0; i < stages.length; i++) {
+      if (balance <= stages[i].high && balance > stages[i].low) return i;
+    }
+    return stages.length - 1;
+  }
+
+  function fmtRiskPct(p) {
+    var s = p.toFixed(6).replace(/0+$/, "");
+    var parts = s.split(".");
+    if (!parts[1] || parts[1].length < 2) s = p.toFixed(2);
+    return s.replace(".", ",") + " %";
+  }
+
+  function resetFormSelections() {
+    var defaultAccountName = state.filters.account !== "all" ? state.filters.account : (state.lists.accounts[0] ? state.lists.accounts[0].name : "");
+    var acc = findAccount(defaultAccountName);
+    state.formSelections = {
+      symbol: (acc && acc.defaultSymbol) ? acc.defaultSymbol : "",
+      setup: "",
+      account: defaultAccountName,
+      time: ""
+    };
+  }
+
+  function mergeDiscoveredValues(trades) {
+    var changed = false;
+    trades.forEach(function (t) {
+      if (t.symbol && state.lists.symbols.indexOf(t.symbol) === -1) { state.lists.symbols.push(t.symbol); changed = true; }
+      if (t.setup && state.lists.setups.indexOf(t.setup) === -1) { state.lists.setups.push(t.setup); changed = true; }
+      if (t.account && accountNames().indexOf(t.account) === -1) { state.lists.accounts.push({ name: t.account, defaultSymbol: "", type: "r" }); changed = true; }
+    });
+    if (changed) persistLists();
+  }
+
+  // ---------- GitHub-Backend (statt Obsidian Local REST API) ----------
+
+  function loadSettings() {
+    try {
+      var raw = localStorage.getItem(OBS_SETTINGS_KEY);
+      var s = raw ? JSON.parse(raw) : {};
+      return {
+        owner: s.owner || "",
+        repo: s.repo || "",
+        branch: s.branch || "main",
+        token: s.token || "",
+        folder: s.folder || "Trading Journal/Trades"
+      };
+    } catch (e) {
+      return { owner: "", repo: "", branch: "main", token: "", folder: "Trading Journal/Trades" };
+    }
+  }
+
+  function persistSettings(s) {
+    try { localStorage.setItem(OBS_SETTINGS_KEY, JSON.stringify(s)); } catch (e) {}
+  }
+
+  function settingsReady() {
+    var s = state && state.settings;
+    return !!(s && s.owner && s.repo && s.branch && s.token && s.folder);
+  }
+
+  function ghUrl(path, query) {
+    var s = state.settings;
+    var encoded = path.split("/").map(function (seg) {
+      return seg === "" ? "" : encodeURIComponent(seg);
+    }).join("/");
+    var url = "https://api.github.com/repos/" + encodeURIComponent(s.owner) + "/" +
+      encodeURIComponent(s.repo) + "/contents/" + encoded;
+    if (query) url += "?" + query;
+    return url;
+  }
+
+  function ghFetch(path, opts) {
+    opts = opts || {};
+    var headers = Object.assign({
+      "Authorization": "Bearer " + state.settings.token,
+      "Accept": "application/vnd.github+json",
+      "X-GitHub-Api-Version": "2022-11-28"
+    }, opts.headers || {});
+    return fetch(ghUrl(path, opts.query), {
+      method: opts.method || "GET",
+      headers: headers,
+      body: opts.body,
+      mode: "cors"
+    });
+  }
+
+  // UTF-8-sichere Base64-Kodierung (Umlaute etc. in Notizen)
+  function utf8ToBase64(str) {
+    var bytes = new TextEncoder().encode(str);
+    var binary = "";
+    for (var i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+    return btoa(binary);
+  }
+  function base64ToUtf8(b64) {
+    var binary = atob(b64.replace(/\n/g, ""));
+    var bytes = new Uint8Array(binary.length);
+    for (var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    return new TextDecoder("utf-8").decode(bytes);
+  }
+  function base64ToBlob(b64, mime) {
+    var binary = atob(b64.replace(/\n/g, ""));
+    var bytes = new Uint8Array(binary.length);
+    for (var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    return new Blob([bytes], { type: mime });
+  }
+
+  function shotRelPath(id) { return "attachments/" + id + ".jpg"; }
+  function fileNameFor(trade) { return trade.date + "_" + trade.id + ".md"; }
+
+  function yamlStr(v) {
+    return '"' + String(v).replace(/\\/g, "\\\\").replace(/"/g, '\\"') + '"';
+  }
+
+  function buildNoteContent(trade) {
+    var lines = ["---"];
+    lines.push("id: " + yamlStr(trade.id));
+    lines.push("date: " + yamlStr(trade.date));
+    lines.push("symbol: " + yamlStr(trade.symbol || ""));
+    lines.push("setup: " + yamlStr(trade.setup || ""));
+    lines.push("account: " + yamlStr(trade.account || ""));
+    lines.push("direction: " + yamlStr(trade.direction || ""));
+    lines.push("time: " + yamlStr(trade.time || ""));
+    lines.push("r: " + Number(trade.r || 0));
+    lines.push("pnl: " + Number(trade.pnl || 0));
+    lines.push("commission: " + Number(trade.commission || 0));
+    lines.push("screenshot: " + yamlStr(trade.hasScreenshot ? shotRelPath(trade.id) : ""));
+    lines.push("createdAt: " + Number(trade.createdAt));
+    lines.push("---");
+    lines.push("");
+    lines.push(trade.notes || "");
+    return lines.join("\n");
+  }
+
+  function parseFrontmatter(raw) {
+    var m = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
+    if (!m) return { fm: {}, body: raw.trim() };
+    var fm = {};
+    m[1].split(/\r?\n/).forEach(function (line) {
+      var idx = line.indexOf(":");
+      if (idx === -1) return;
+      var key = line.slice(0, idx).trim();
+      var val = line.slice(idx + 1).trim();
+      if (val.charAt(0) === '"' && val.charAt(val.length - 1) === '"') {
+        val = val.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, "\\");
+      } else if (val !== "" && !isNaN(Number(val))) {
+        val = Number(val);
+      }
+      fm[key] = val;
+    });
+    return { fm: fm, body: m[2].trim() };
+  }
+
+  async function listTradeFiles() {
+    var res = await ghFetch(state.settings.folder, { query: "ref=" + encodeURIComponent(state.settings.branch) });
+    if (res.status === 404) return [];
+    if (!res.ok) throw new Error("Ordner konnte nicht gelesen werden (Status " + res.status + ").");
+    var data = await res.json();
+    var files = Array.isArray(data) ? data : [];
+    return files.filter(function (f) { return f.type === "file" && /\.md$/i.test(f.name); })
+      .map(function (f) { return f.name; });
+  }
+
+  async function fetchTradesFromObsidian() {
+    if (!settingsReady()) return;
+    state.syncStatus = "loading";
+    render();
+    try {
+      var files = await listTradeFiles();
+      var trades = [];
+      for (var i = 0; i < files.length; i++) {
+        var res = await ghFetch(state.settings.folder + "/" + files[i], { query: "ref=" + encodeURIComponent(state.settings.branch) });
+        if (!res.ok) continue;
+        var data = await res.json();
+        var raw = base64ToUtf8(data.content || "");
+        var parsed = parseFrontmatter(raw);
+        var fm = parsed.fm;
+        if (!fm.id || !fm.date) continue;
+        trades.push({
+          id: String(fm.id),
+          date: String(fm.date),
+          symbol: fm.symbol || "",
+          setup: fm.setup || "",
+          account: fm.account || "",
+          direction: fm.direction || "",
+          time: fm.time || "",
+          r: Number(fm.r) || 0,
+          pnl: Number(fm.pnl) || 0,
+          commission: Number(fm.commission) || 0,
+          notes: parsed.body,
+          hasScreenshot: !!fm.screenshot,
+          screenshotPath: fm.screenshot || "",
+          createdAt: Number(fm.createdAt) || 0
+        });
+      }
+      trades.sort(function (a, b) { return a.createdAt - b.createdAt; });
+      state.trades = trades;
+      mergeDiscoveredValues(trades);
+      state.syncStatus = "ok";
+      state.syncError = "";
+    } catch (e) {
+      state.syncStatus = "error";
+      state.syncError = (e && e.message) ? e.message : "Verbindung zu GitHub fehlgeschlagen. Stimmen Repo, Branch und Token?";
+    }
+    render();
+  }
+
+  async function saveTradeToObsidian(trade, formShotDataUrl) {
+    if (formShotDataUrl) {
+      var base64Shot = formShotDataUrl.split(",")[1] || "";
+      var shotPath = state.settings.folder + "/" + shotRelPath(trade.id);
+      var shotSha = await getFileSha(shotPath).catch(function () { return null; });
+      var shotBody = { message: "Trade-Screenshot " + trade.id, content: base64Shot, branch: state.settings.branch };
+      if (shotSha) shotBody.sha = shotSha;
+      var putShot = await ghFetch(shotPath, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(shotBody)
+      });
+      if (!putShot.ok) throw new Error("Screenshot konnte nicht gespeichert werden (Status " + putShot.status + ").");
+      trade.hasScreenshot = true;
+      trade.screenshotPath = shotRelPath(trade.id);
+    }
+    var content = buildNoteContent(trade);
+    var notePath = state.settings.folder + "/" + fileNameFor(trade);
+    var noteSha = await getFileSha(notePath).catch(function () { return null; });
+    var noteBody = { message: "Trade " + trade.date + " (" + (trade.symbol || "?") + ")", content: utf8ToBase64(content), branch: state.settings.branch };
+    if (noteSha) noteBody.sha = noteSha;
+    var putNote = await ghFetch(notePath, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(noteBody)
+    });
+    if (!putNote.ok) throw new Error("Trade konnte nicht gespeichert werden (Status " + putNote.status + ").");
+  }
+
+  async function updateTradeInObsidian(oldTrade, newTrade, opts) {
+    opts = opts || {};
+    if (opts.removeShot && oldTrade.hasScreenshot) {
+      var shotPath = state.settings.folder + "/" + (oldTrade.screenshotPath || shotRelPath(oldTrade.id));
+      var shotSha = await getFileSha(shotPath).catch(function () { return null; });
+      if (shotSha) {
+        await ghFetch(shotPath, {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: "Screenshot entfernt " + oldTrade.id, sha: shotSha, branch: state.settings.branch })
+        }).catch(function () {});
+      }
+    }
+
+    await saveTradeToObsidian(newTrade, opts.newShot || null);
+
+    if (oldTrade.date !== newTrade.date) {
+      var oldNotePath = state.settings.folder + "/" + fileNameFor(oldTrade);
+      var oldSha = await getFileSha(oldNotePath).catch(function () { return null; });
+      if (oldSha) {
+        await ghFetch(oldNotePath, {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: "Trade verschoben (Datum geändert) " + oldTrade.id, sha: oldSha, branch: state.settings.branch })
+        }).catch(function () {});
+      }
+    }
+  }
+
+  async function getFileSha(path) {
+    var res = await ghFetch(path, { query: "ref=" + encodeURIComponent(state.settings.branch) });
+    if (!res.ok) return null;
+    var data = await res.json();
+    return data.sha || null;
+  }
+
+  async function deleteTradeFromObsidian(trade) {
+    var notePath = state.settings.folder + "/" + fileNameFor(trade);
+    var noteSha = await getFileSha(notePath).catch(function () { return null; });
+    if (noteSha) {
+      await ghFetch(notePath, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: "Trade gelöscht " + trade.id, sha: noteSha, branch: state.settings.branch })
+      }).catch(function () {});
+    }
+    if (trade.hasScreenshot) {
+      var shotPath = state.settings.folder + "/" + (trade.screenshotPath || shotRelPath(trade.id));
+      var shotSha = await getFileSha(shotPath).catch(function () { return null; });
+      if (shotSha) {
+        await ghFetch(shotPath, {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: "Screenshot gelöscht " + trade.id, sha: shotSha, branch: state.settings.branch })
+        }).catch(function () {});
+      }
+    }
+  }
+
+  function fetchShotBlobUrl(trade) {
+    if (state.shotCache[trade.id]) return Promise.resolve(state.shotCache[trade.id]);
+    var shotPath = state.settings.folder + "/" + (trade.screenshotPath || shotRelPath(trade.id));
+    return ghFetch(shotPath, { query: "ref=" + encodeURIComponent(state.settings.branch) }).then(function (res) {
+      if (!res.ok) throw new Error("Screenshot nicht gefunden.");
+      return res.json();
+    }).then(function (data) {
+      var blob = base64ToBlob(data.content || "", "image/jpeg");
+      var url = URL.createObjectURL(blob);
+      state.shotCache[trade.id] = url;
+      return url;
+    });
+  }
+
+  function fmtVal(v, unit) {
+    var n = Number(v) || 0;
+    var sign = n > 0 ? "+" : n < 0 ? "-" : "";
+    var abs = Math.abs(n);
+    if (unit === "usd") return sign + "$" + abs.toFixed(2);
+    return sign + abs.toFixed(2) + "R";
+  }
+  function fmtMoney(v) {
+    var n = Number(v) || 0;
+    var sign = n < 0 ? "-" : "";
+    return sign + "$" + Math.abs(n).toFixed(2);
+  }
+  function outcome(v) { if (v > 0) return "win"; if (v < 0) return "loss"; return "be"; }
+  function fmtDateLong(iso) {
+    var d = new Date(iso + "T00:00:00");
+    return d.toLocaleDateString("de-DE", { weekday: "long", day: "2-digit", month: "long", year: "numeric" });
+  }
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  // ---------- Filtering & Stats ----------
+
+  function valueFieldForAccount(accName) {
+    return (accName && accName !== "all" && isUsdAccount(accName)) ? "usd" : "r";
+  }
+
+  // When a single account is selected, its own type decides the unit (R or $).
+  // When "Alle Accounts" is selected, there's no single account to ask, so we
+  // fall back to the explicit R/$ toggle in state.filters.unit. Without this,
+  // "Alle Accounts" used to silently mean "all R accounts" and Livemarkt-
+  // Unterkonten ($ accounts) were dropped from every stat on the page.
+  function unitForFilters(f) {
+    return f.account !== "all" ? valueFieldForAccount(f.account) : (f.unit || "r");
+  }
+
+  function currentUnit() { return unitForFilters(state.filters); }
+
+  function filteredTrades(overrides) {
+    var f = Object.assign({}, state.filters, overrides || {});
+    var unit = unitForFilters(f);
+    return state.trades.filter(function (t) {
+      if (f.account !== "all" && (t.account || "") !== f.account) return false;
+      if (f.symbol !== "all" && (t.symbol || "") !== f.symbol) return false;
+      if (f.setup !== "all" && (t.setup || "") !== f.setup) return false;
+      var usd = isUsdAccount(t.account);
+      if (unit === "r" && usd) return false;
+      if (unit === "usd" && !usd) return false;
+      return true;
+    }).map(function (t) {
+      var copy = Object.assign({}, t);
+      copy.value = unit === "usd" ? ((Number(t.pnl) || 0) - (Number(t.commission) || 0)) : (Number(t.r) || 0);
+      copy.outcome = outcome(copy.value);
+      copy.unit = unit;
+      return copy;
+    });
+  }
+
+  function byDateMap() {
+    var map = {};
+    filteredTrades().forEach(function (t) {
+      if (!map[t.date]) map[t.date] = [];
+      map[t.date].push(t);
+    });
+    return map;
+  }
+
+  function computeStats(trades) {
+    var n = trades.length;
+    var winTrades = trades.filter(function (t) { return t.outcome === "win"; });
+    var lossTrades = trades.filter(function (t) { return t.outcome === "loss"; });
+    var wins = winTrades.length, losses = lossTrades.length, be = n - wins - losses;
+    var totalVal = trades.reduce(function (s, t) { return s + t.value; }, 0);
+    var grossWin = winTrades.reduce(function (s, t) { return s + t.value; }, 0);
+    var grossLoss = lossTrades.reduce(function (s, t) { return s + t.value; }, 0);
+    var denom = (n - be) || n;
+    var avgWin = wins ? grossWin / wins : 0;
+    var avgLoss = losses ? grossLoss / losses : 0;
+    var profitFactor = grossLoss !== 0 ? Math.abs(grossWin / grossLoss) : (grossWin > 0 ? null : 0);
+
+    var byDate = {};
+    trades.forEach(function (t) { (byDate[t.date] = byDate[t.date] || []).push(t); });
+    var dayKeys = Object.keys(byDate);
+    var dayWin = 0, dayLoss = 0, dayBE = 0;
+    dayKeys.forEach(function (k) {
+      var sum = byDate[k].reduce(function (s, t) { return s + t.value; }, 0);
+      if (sum > 0) dayWin++; else if (sum < 0) dayLoss++; else dayBE++;
+    });
+    var dayDenom = (dayKeys.length - dayBE) || dayKeys.length;
+
+    return {
+      n: n, wins: wins, losses: losses, be: be,
+      winRate: denom ? (wins / denom) * 100 : 0,
+      totalVal: totalVal, avgVal: n ? totalVal / n : 0,
+      avgWin: avgWin, avgLoss: avgLoss, profitFactor: profitFactor,
+      days: dayKeys.length, dayWin: dayWin, dayLoss: dayLoss, dayBE: dayBE,
+      dayWinRate: dayDenom ? (dayWin / dayDenom) * 100 : 0
+    };
+  }
+
+  function overallStats() { return computeStats(filteredTrades()); }
+
+  function periodRows() {
+    var trades = filteredTrades();
+    var map = {};
+    trades.forEach(function (t) {
+      var key = t.date.slice(0, 7);
+      if (!map[key]) map[key] = [];
+      map[key].push(t);
+    });
+    return Object.keys(map).sort().map(function (key) {
+      var s = computeStats(map[key]);
+      s.key = key;
+      return s;
+    });
+  }
+
+  function groupStats(field) {
+    var overrideKey = {};
+    overrideKey[field] = "all";
+    var trades = filteredTrades(overrideKey);
+    var map = {};
+    trades.forEach(function (t) {
+      var key = t[field] || "– (kein Wert)";
+      if (!map[key]) map[key] = [];
+      map[key].push(t);
+    });
+    return Object.keys(map).map(function (key) {
+      var s = computeStats(map[key]);
+      s.label = key;
+      return s;
+    }).sort(function (a, b) { return b.totalVal - a.totalVal; });
+  }
+
+  function timeSlotStats() {
+    var trades = filteredTrades().filter(function (t) { return t.time; });
+    var map = {};
+    trades.forEach(function (t) {
+      if (!map[t.time]) map[t.time] = [];
+      map[t.time].push(t);
+    });
+    var order = TIME_SLOTS.slice();
+    var keys = Object.keys(map).sort(function (a, b) {
+      var ia = order.indexOf(a), ib = order.indexOf(b);
+      if (ia === -1 && ib === -1) return a.localeCompare(b);
+      if (ia === -1) return 1;
+      if (ib === -1) return -1;
+      return ia - ib;
+    });
+    return keys.map(function (key) {
+      var s = computeStats(map[key]);
+      s.label = key;
+      return s;
+    });
+  }
+
+  function dayVisualClass(dayTrades) {
+    if (!dayTrades.length) return { bg: "var(--surface-alt)", color: "var(--text-faint)", border: "var(--border)" };
+    var sum = dayTrades.reduce(function (s, t) { return s + t.value; }, 0);
+    if (sum > 0) return { bg: "var(--green-bg)", color: "var(--green)", border: "var(--green-bg-strong)" };
+    if (sum < 0) return { bg: "var(--red-bg)", color: "var(--red)", border: "var(--red-bg-strong)" };
+    return { bg: "var(--amber-bg)", color: "var(--amber)", border: "var(--amber-bg)" };
+  }
+
+  function compressImage(dataUrl, cb) {
+    var img = new Image();
+    img.onload = function () {
+      var maxDim = 900;
+      var w = img.width, h = img.height;
+      if (w > maxDim || h > maxDim) {
+        if (w > h) { h = Math.round(h * (maxDim / w)); w = maxDim; }
+        else { w = Math.round(w * (maxDim / h)); h = maxDim; }
+      }
+      var canvas = document.createElement("canvas");
+      canvas.width = w; canvas.height = h;
+      var ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, w, h);
+      cb(canvas.toDataURL("image/jpeg", 0.78));
+    };
+    img.onerror = function () { cb(dataUrl); };
+    img.src = dataUrl;
+  }
+
+  function readFileToDataUrl(file, cb) {
+    if (!file || !file.type || file.type.indexOf("image/") !== 0) return;
+    var reader = new FileReader();
+    reader.onload = function () { compressImage(reader.result, cb); };
+    reader.readAsDataURL(file);
+  }
+
+  // ---------- SVG helpers (gauges / chart) ----------
+
+  function pt(cx, cy, r, tDeg) {
+    var t = tDeg * Math.PI / 180;
+    return { x: cx + r * Math.cos(t), y: cy + r * Math.sin(t) };
+  }
+  function semiArcPath(cx, cy, r, t0, t1) {
+    if (t1 <= t0) return "";
+    var p0 = pt(cx, cy, r, t0), p1 = pt(cx, cy, r, t1);
+    var large = (t1 - t0) > 180 ? 1 : 0;
+    return "M " + p0.x.toFixed(2) + " " + p0.y.toFixed(2) + " A " + r + " " + r + " 0 " + large + " 1 " + p1.x.toFixed(2) + " " + p1.y.toFixed(2);
+  }
+
+  function semiGauge(winN, beN, loseN, bigLabel) {
+    var total = winN + beN + loseN;
+    var cx = 54, cy = 54, r = 42, sw = 11;
+    var t0 = 180;
+    var wDeg = total ? 180 * (winN / total) : 0;
+    var beDeg = total ? 180 * (beN / total) : 0;
+    var segs = "";
+    if (!total) {
+      segs = '<path d="' + semiArcPath(cx, cy, r, 180, 360) + '" stroke="var(--border)" stroke-width="' + sw + '" fill="none" stroke-linecap="round"/>';
+    } else {
+      if (winN) segs += '<path d="' + semiArcPath(cx, cy, r, t0, t0 + wDeg) + '" stroke="var(--green)" stroke-width="' + sw + '" fill="none" stroke-linecap="round"/>';
+      if (beN) segs += '<path d="' + semiArcPath(cx, cy, r, t0 + wDeg, t0 + wDeg + beDeg) + '" stroke="var(--amber)" stroke-width="' + sw + '" fill="none" stroke-linecap="round"/>';
+      if (loseN) segs += '<path d="' + semiArcPath(cx, cy, r, t0 + wDeg + beDeg, 360) + '" stroke="var(--red)" stroke-width="' + sw + '" fill="none" stroke-linecap="round"/>';
+    }
+    var svg = '<svg viewBox="0 0 108 62" width="108" height="62">' + segs + '</svg>';
+    return '<div class="gauge-wrap">' + svg + '<div class="gauge-num">' + esc(bigLabel) + '</div></div>';
+  }
+
+  function donutRing(winVal, lossVal, centerLabel) {
+    var total = Math.abs(winVal) + Math.abs(lossVal);
+    var cx = 39, cy = 39, r = 30, sw = 9;
+    var circumference = 2 * Math.PI * r;
+    var winFrac = total ? Math.abs(winVal) / total : 0;
+    var winLen = circumference * winFrac;
+    var svg = '<svg viewBox="0 0 78 78" width="78" height="78">' +
+      '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" stroke="var(--border)" stroke-width="' + sw + '" fill="none"/>' +
+      '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" stroke="var(--accent)" stroke-width="' + sw + '" fill="none" ' +
+      'stroke-dasharray="' + winLen.toFixed(1) + ' ' + (circumference - winLen).toFixed(1) + '" stroke-linecap="round" ' +
+      'transform="rotate(-90 ' + cx + ' ' + cy + ')"/></svg>';
+    return '<div class="donut-wrap">' + svg + '<div class="donut-num">' + esc(centerLabel) + '</div></div>';
+  }
+
+  function winLossBar(avgWin, avgLoss) {
+    var w = Math.abs(avgWin), l = Math.abs(avgLoss);
+    var total = w + l || 1;
+    var wPct = (w / total) * 100;
+    return '<div class="bar-track"><div class="bar-seg-win" style="width:' + wPct.toFixed(1) + '%"></div>' +
+      '<div class="bar-seg-loss" style="width:' + (100 - wPct).toFixed(1) + '%"></div></div>' +
+      '<div class="bar-caption"><span style="color:var(--green)">' + fmtMoneyOrR(avgWin) + '</span>' +
+      '<span style="color:var(--red)">' + fmtMoneyOrR(avgLoss) + '</span></div>';
+  }
+  function fmtMoneyOrR(v) {
+    return currentUnit() === "usd" ? fmtMoney(v) : (Number(v) || 0).toFixed(2) + "R";
+  }
+
+  function performanceChart(trades, unit, startingCapital) {
+    if (!trades.length) return '<div class="empty-note">Noch keine Trades für den Performance-Chart.</div>';
+    var sorted = trades.slice().sort(function (a, b) { return a.createdAt - b.createdAt; });
+    var running = unit === "usd" ? (Number(startingCapital) || 0) : 0;
+    var points = [{ x: 0, y: running }];
+    sorted.forEach(function (t, i) {
+      running += t.value;
+      points.push({ x: i + 1, y: running });
+    });
+    var w = 900, h = 220, padL = 54, padR = 14, padT = 14, padB = 24;
+    var ys = points.map(function (p) { return p.y; });
+    var minY = Math.min.apply(null, ys), maxY = Math.max.apply(null, ys);
+    if (minY === maxY) { minY -= 1; maxY += 1; }
+    var xScale = function (x) { return padL + (x / (points.length - 1)) * (w - padL - padR); };
+    var yScale = function (y) { return padT + (1 - (y - minY) / (maxY - minY)) * (h - padT - padB); };
+    var path = points.map(function (p, i) { return (i === 0 ? "M " : "L ") + xScale(p.x).toFixed(1) + " " + yScale(p.y).toFixed(1); }).join(" ");
+    var zeroY = yScale(unit === "usd" ? (Number(startingCapital) || 0) : 0);
+    var last = points[points.length - 1].y;
+    var lineColor = last >= points[0].y ? "var(--green)" : "var(--red)";
+    var areaPath = path + " L " + xScale(points[points.length - 1].x).toFixed(1) + " " + (h - padB) + " L " + xScale(0).toFixed(1) + " " + (h - padB) + " Z";
+    var svg = '<svg viewBox="0 0 ' + w + ' ' + h + '" width="100%" style="display:block" preserveAspectRatio="none">' +
+      '<line x1="' + padL + '" y1="' + zeroY.toFixed(1) + '" x2="' + (w - padR) + '" y2="' + zeroY.toFixed(1) + '" stroke="var(--border)" stroke-dasharray="3 4"/>' +
+      '<path d="' + areaPath + '" fill="' + lineColor + '" opacity="0.10" stroke="none"/>' +
+      '<path d="' + path + '" fill="none" stroke="' + lineColor + '" stroke-width="2"/>' +
+      '<text x="' + padL + '" y="12" font-size="10" fill="var(--text-faint)">' + esc(unit === "usd" ? fmtMoney(maxY) : maxY.toFixed(1) + "R") + '</text>' +
+      '<text x="' + padL + '" y="' + (h - padB + 14) + '" font-size="10" fill="var(--text-faint)">' + esc(unit === "usd" ? fmtMoney(minY) : minY.toFixed(1) + "R") + '</text>' +
+      '</svg>';
+    return '<div class="perf-svg-wrap">' + svg + '</div>';
+  }
+
+  // ---------- Rendering ----------
+
+  function render() {
+    applyTheme();
+    var app = document.getElementById("app");
+    var overall = overallStats();
+    var byDate = byDateMap();
+    var unit = currentUnit();
+
+    var html = "";
+    html += '<div class="top-row"><div><div class="header-eyebrow">Handelsjournal</div><h1>Trading Journal</h1></div>';
+    html += '<div class="theme-toggle">' +
+      '<button type="button" class="theme-btn' + (state.theme === "dark" ? " active" : "") + '" data-action="set-theme" data-theme="dark">&#127769; Dunkel</button>' +
+      '<button type="button" class="theme-btn' + (state.theme === "light" ? " active" : "") + '" data-action="set-theme" data-theme="light">&#9728;&#65039; Hell</button>' +
+      '</div></div>';
+
+    if (state.saveError) html += '<div class="save-error">' + esc(state.saveError) + "</div>";
+
+    html += renderObsidianPanel();
+    html += renderAccountTabs();
+    if (state.filters.account !== "all") {
+      var selectedAcc = findAccount(state.filters.account);
+      if (selectedAcc && selectedAcc.type === "usd" && selectedAcc.riskModel) {
+        html += renderRiskPanel(selectedAcc);
+      }
+    }
+    html += renderFilterBar();
+    html += renderDashboard(overall, unit);
+    html += renderYearlyCalendar();
+    html += renderCalendar(byDate);
+
+    if (state.selectedDate) html += renderDayPanel(byDate[state.selectedDate] || []);
+
+    html += renderPeriodTable();
+    html += renderTimeBreakdown();
+    html += renderBreakdownTable("Auswertung nach Setup", "Setup", groupStats("setup"), unit);
+    html += renderBreakdownTable("Auswertung nach Symbol", "Symbol", groupStats("symbol"), unit);
+
+    if (state.trades.length > 0) {
+      html += '<div class="footer-row">';
+      if (!state.confirmClear) {
+        html += '<button class="link-btn" data-action="ask-clear">Alle Daten löschen</button>';
+      } else {
+        html += '<span style="color:var(--text-muted)">Wirklich alle ' + state.trades.length + ' Trades löschen? ' +
+          '<button class="link-btn" data-action="confirm-clear" style="color:var(--red)">Ja, löschen</button> · ' +
+          '<button class="link-btn" data-action="cancel-clear">Abbrechen</button></span>';
+      }
+      html += "</div>";
+    }
+
+    app.innerHTML = html;
+    attachEvents(byDate);
+    loadPendingScreenshots();
+
+    var editModalEl = document.getElementById("edit-modal");
+    if (editModalEl) {
+      editModalEl.innerHTML = state.editTradeId ? renderEditModal() : "";
+      if (state.editTradeId) attachEditModalEvents();
+    }
+
+    if (state.scrollToDayPanel) {
+      state.scrollToDayPanel = false;
+      var dayPanel = document.getElementById("day-panel");
+      if (dayPanel) {
+        dayPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+        setTimeout(function () {
+          var valInput = document.getElementById("f-r") || document.getElementById("f-pnl");
+          if (valInput) valInput.focus();
+        }, 380);
+      }
+    }
+  }
+
+  function renderDashboard(overall, unit) {
+    var acc = state.filters.account !== "all" ? findAccount(state.filters.account) : null;
+    var netLabel = "Netto " + (unit === "usd" ? "P&L" : "R");
+    var netVal = unit === "usd" ? fmtMoney(overall.totalVal) : fmtVal(overall.totalVal, "r");
+    var netColor = overall.totalVal > 0 ? "var(--green)" : overall.totalVal < 0 ? "var(--red)" : "var(--text-primary)";
+
+    var html = '<div class="stats-grid">';
+    html += '<div class="stat-card"><div class="stat-label">' + netLabel + '</div>' +
+      '<div class="stat-value" style="color:' + netColor + '">' + esc(netVal) + '</div>' +
+      '<div class="gauge-caption"><span>' + overall.n + ' Trades</span></div></div>';
+
+    html += '<div class="stat-card"><div class="stat-label">Trade Win-%</div>' +
+      '<div class="stat-gauge-row">' + semiGauge(overall.wins, overall.be, overall.losses, overall.winRate.toFixed(0) + "%") + '</div>' +
+      '<div class="gauge-caption"><span style="color:var(--green)">' + overall.wins + ' W</span><span style="color:var(--amber)">' + overall.be + ' BE</span><span style="color:var(--red)">' + overall.losses + ' L</span></div></div>';
+
+    html += '<div class="stat-card"><div class="stat-label">Tage Win-%</div>' +
+      '<div class="stat-gauge-row">' + semiGauge(overall.dayWin, overall.dayBE, overall.dayLoss, overall.dayWinRate.toFixed(0) + "%") + '</div>' +
+      '<div class="gauge-caption"><span style="color:var(--green)">' + overall.dayWin + ' T</span><span style="color:var(--amber)">' + overall.dayBE + ' BE</span><span style="color:var(--red)">' + overall.dayLoss + ' T</span></div></div>';
+
+    var pf = overall.profitFactor === null ? "–" : overall.profitFactor.toFixed(2);
+    html += '<div class="stat-card"><div class="stat-label">Profit-Faktor</div>' +
+      '<div class="stat-gauge-row">' + donutRing(overall.avgWin * overall.wins, overall.avgLoss * overall.losses, pf) + '</div></div>';
+
+    html += '<div class="stat-card"><div class="stat-label">Ø Win / Ø Loss</div>' + winLossBar(overall.avgWin, overall.avgLoss) + '</div>';
+
+    if (acc && acc.type === "usd") {
+      var bal = accountBalance(acc);
+      html += '<div class="stat-card"><div class="stat-label">Kontostand (' + esc(acc.name) + ')</div>' +
+        '<div class="stat-value" style="color:' + (bal >= (Number(acc.startingCapital) || 0) ? "var(--green)" : "var(--red)") + '">' + fmtMoney(bal) + '</div>' +
+        '<div class="gauge-caption"><span>Start: ' + fmtMoney(acc.startingCapital) + '</span></div></div>';
+    }
+    html += "</div>";
+
+    html += '<div class="card"><div class="form-section-title" style="margin-bottom:14px">Performance</div>';
+    html += performanceChart(filteredTrades(), unit, acc ? acc.startingCapital : 0);
+    html += "</div>";
+
+    return html;
+  }
+
+  function renderObsidianPanel() {
+    var s = state.settings;
+    var html = '<div class="card">';
+    html += '<div class="panel-header"><div class="panel-title">GitHub-Verbindung</div>';
+    html += '<button class="icon-btn" data-action="obs-toggle-settings" aria-label="Einstellungen">' +
+      (state.settingsOpen ? "&#9650;" : "&#9881;&#65039;") + "</button></div>";
+
+    if (state.syncStatus === "loading") {
+      html += '<div style="color:var(--text-muted); font-size:13px">Lade Trades aus GitHub …</div>';
+    } else if (state.syncStatus === "error") {
+      html += '<div class="save-error" style="margin-bottom:0">' + esc(state.syncError) +
+        ' <button class="link-btn" data-action="obs-reload">Erneut versuchen</button></div>';
+    } else if (state.syncStatus === "ok") {
+      html += '<div style="color:var(--green); font-size:13px">&#10003; Verbunden mit GitHub · ' +
+        state.trades.length + ' Trade(s) geladen · <button class="link-btn" data-action="obs-reload">Neu laden</button></div>';
+    } else {
+      html += '<div style="color:var(--text-faint); font-size:13px">Noch nicht verbunden – trage unten Repo-Daten und Token ein.</div>';
+    }
+
+    if (state.settingsOpen) {
+      html += '<form id="obs-settings-form" style="margin-top:14px">';
+      html += '<div class="form-grid">';
+      html += '<div><label class="field-label">GitHub-Nutzer/Organisation</label><input type="text" id="s-owner" value="' + esc(s.owner) + '" placeholder="z.B. joellook" /></div>';
+      html += '<div><label class="field-label">Repository</label><input type="text" id="s-repo" value="' + esc(s.repo) + '" placeholder="z.B. obsidian-vault" /></div>';
+      html += '<div><label class="field-label">Branch</label><input type="text" id="s-branch" value="' + esc(s.branch) + '" placeholder="main" /></div>';
+      html += '<div><label class="field-label">Personal Access Token</label><input type="password" id="s-token" value="' + esc(s.token) + '" placeholder="ghp_..." /></div>';
+      html += '<div><label class="field-label">Ordner im Repo</label><input type="text" id="s-folder" value="' + esc(s.folder) + '" placeholder="Trading Journal/Trades" /></div>';
+      html += "</div>";
+      html += '<div style="font-size:12px; color:var(--text-faint); margin-bottom:12px">1) Lege dein Obsidian-Vault (oder einen Unterordner davon) als privates GitHub-Repo an. 2) Installiere im Vault das Community-Plugin „Obsidian Git“, das automatisch pusht/pullt. 3) Erstelle auf GitHub → Settings → Developer settings → Fine-grained tokens ein Token mit Lese-/Schreibrechten nur für dieses Repo (Contents: Read and write) und trag es hier ein. So kannst du von jedem Gerät mit Internet Trades eintragen – dein PC muss dafür nicht laufen; Obsidian synct beim nächsten Öffnen.</div>';
+      html += '<div style="display:flex; justify-content:flex-end"><button type="submit" class="primary-btn">Speichern &amp; verbinden</button></div>';
+      html += "</form>";
+    }
+
+    html += "</div>";
+    return html;
+  }
+
+  function renderAccountTabs() {
+    var html = '<div class="card" style="padding:14px 18px">';
+    html += '<div class="panel-header" style="margin-bottom:10px"><div class="panel-title">Account</div>';
+    html += '<div style="display:flex; gap:8px; flex-wrap:wrap">';
+    html += '<button class="nav-btn" data-action="toggle-compare" aria-label="Accounts vergleichen">' +
+      (state.compare.open ? "Vergleich schließen ✕" : "⇄ Accounts vergleichen") + "</button>";
+    html += '<button class="icon-btn" data-action="toggle-account-manage" aria-label="Accounts verwalten">' +
+      (state.accountManageOpen ? "&#9650;" : "&#9881;&#65039;") + "</button></div></div>";
+
+    var rAccounts = state.lists.accounts.filter(function (a) { return a.type !== "usd"; });
+    var usdAccounts = state.lists.accounts.filter(function (a) { return a.type === "usd"; });
+
+    html += '<div class="account-tabs">';
+    html += '<button type="button" class="account-tab' + (state.filters.account === "all" ? " active" : "") +
+      '" data-action="select-account" data-account="all">Alle Accounts</button>';
+    rAccounts.forEach(function (a) {
+      html += '<button type="button" class="account-tab' + (state.filters.account === a.name ? " active" : "") +
+        '" data-action="select-account" data-account="' + esc(a.name) + '">' + esc(a.name) + "</button>";
+    });
+    html += '<button type="button" class="account-tab account-tab-add" data-action="add-account">+ Account (R)</button>';
+    html += "</div>";
+
+    html += '<div class="account-group-label">' + LIVEMARKT_GROUP + ' (Unterkonten in $)</div>';
+    html += '<div class="account-tabs">';
+    usdAccounts.forEach(function (a) {
+      html += '<button type="button" class="account-tab usd-tab' + (state.filters.account === a.name ? " active" : "") +
+        '" data-action="select-account" data-account="' + esc(a.name) + '">' + esc(a.name) + "</button>";
+    });
+    html += '<button type="button" class="account-tab account-tab-add" data-action="add-livemarkt-account">+ Livemarkt-Unterkonto</button>';
+    html += "</div>";
+
+    if (state.filters.account === "all" && rAccounts.length && usdAccounts.length) {
+      html += '<div class="account-group-label" style="margin-bottom:6px">„Alle Accounts" zeigt R- und $-Konten getrennt (unterschiedliche Einheiten)</div>';
+      html += '<div class="chip-group">';
+      html += '<button type="button" class="chip' + (state.filters.unit !== "usd" ? " active" : "") +
+        '" data-action="select-unit" data-unit="r">R-Accounts (' + rAccounts.length + ')</button>';
+      html += '<button type="button" class="chip' + (state.filters.unit === "usd" ? " active" : "") +
+        '" data-action="select-unit" data-unit="usd">$-Accounts / Unterkonten (' + usdAccounts.length + ')</button>';
+      html += "</div>";
+    }
+
+    if (state.accountManageOpen) html += renderAccountManagePanel();
+    if (state.compare.open) html += renderComparePanel();
+    html += "</div>";
+    return html;
+  }
+
+  function renderComparePanel() {
+    var html = '<div class="account-manage">';
+    html += '<div class="form-section-title" style="margin-bottom:10px">Accounts vergleichen</div>';
+    html += '<div class="section-sub">Wähle zwei oder mehr Accounts, um ihre Statistiken nebeneinander zu sehen.</div>';
+    html += '<div class="chip-group" style="margin-bottom:16px">';
+    state.lists.accounts.forEach(function (a) {
+      var active = state.compare.accounts.indexOf(a.name) !== -1;
+      html += '<button type="button" class="chip' + (active ? " active" : "") +
+        '" data-action="toggle-compare-account" data-account="' + esc(a.name) + '">' +
+        (a.type === "usd" ? "$ " : "R ") + esc(a.name) + "</button>";
+    });
+    html += "</div>";
+
+    var selected = state.compare.accounts.map(findAccount).filter(Boolean);
+    if (selected.length < 2) {
+      html += '<div class="empty-note">Wähle mindestens zwei Accounts aus, um sie zu vergleichen.</div>';
+    } else {
+      html += '<div class="compare-grid">';
+      selected.forEach(function (acc) {
+        var u = valueFieldForAccount(acc.name);
+        var trades = filteredTrades({ account: acc.name });
+        var s = computeStats(trades);
+        var netVal = u === "usd" ? fmtMoney(s.totalVal) : fmtVal(s.totalVal, "r");
+        var netColor = s.totalVal > 0 ? "var(--green)" : s.totalVal < 0 ? "var(--red)" : "var(--text-primary)";
+        var pf = s.profitFactor === null ? "–" : s.profitFactor.toFixed(2);
+        var avgWinStr = u === "usd" ? fmtMoney(s.avgWin) : fmtVal(s.avgWin, "r");
+        var avgLossStr = u === "usd" ? fmtMoney(s.avgLoss) : fmtVal(s.avgLoss, "r");
+        html += '<div class="compare-card">';
+        html += '<div class="compare-card-title">' + esc(acc.name) + (u === "usd" ? ' <span class="pill pill-account">$</span>' : ' <span class="pill pill-account">R</span>') + "</div>";
+        html += '<div class="compare-stat"><span>Netto</span><b style="color:' + netColor + '">' + esc(netVal) + "</b></div>";
+        html += '<div class="compare-stat"><span>Trades</span><b>' + s.n + "</b></div>";
+        html += '<div class="compare-stat"><span>Trade Win-Rate</span><b>' + s.winRate.toFixed(0) + "%</b></div>";
+        html += '<div class="compare-stat"><span>Tage Win-Rate</span><b>' + s.dayWinRate.toFixed(0) + "%</b></div>";
+        html += '<div class="compare-stat"><span>Profit-Faktor</span><b>' + pf + "</b></div>";
+        html += '<div class="compare-stat"><span>Ø Win / Ø Loss</span><b>' + esc(avgWinStr) + ' / ' + esc(avgLossStr) + "</b></div>";
+        if (acc.type === "usd") {
+          var bal = accountBalance(acc);
+          html += '<div class="compare-stat"><span>Kontostand</span><b>' + fmtMoney(bal) + "</b></div>";
+        }
+        html += "</div>";
+      });
+      html += "</div>";
+    }
+    html += "</div>";
+    return html;
+  }
+
+  function renderAccountManagePanel() {
+    var html = '<div class="account-manage">';
+    if (state.lists.accounts.length === 0) {
+      html += '<div class="empty-note" style="padding:0">Noch keine Accounts angelegt.</div>';
+    } else {
+      state.lists.accounts.forEach(function (a) {
+        html += '<div class="account-manage-row">';
+        html += '<div class="account-manage-name">' + esc(a.name) + (a.type === "usd" ? ' <span style="color:var(--text-faint)">($)</span>' : "") + "</div>";
+        html += '<div style="flex:1"><select data-account-symbol-select="' + esc(a.name) + '">';
+        html += '<option value=""' + (!a.defaultSymbol ? " selected" : "") + '>– kein Standard-Symbol –</option>';
+        state.lists.symbols.forEach(function (s) {
+          html += '<option value="' + esc(s) + '"' + (a.defaultSymbol === s ? " selected" : "") + '>' + esc(s) + "</option>";
+        });
+        html += "</select></div>";
+        html += '<button type="button" class="icon-btn" data-action="delete-account" data-account="' + esc(a.name) + '" aria-label="Account löschen">&#128465;</button>';
+        html += "</div>";
+        if (a.type === "usd") {
+          var bal = accountBalance(a);
+          html += '<div class="account-usd-box">';
+          html += '<div style="display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap">';
+          html += '<div style="min-width:150px"><label class="field-label">Startkapital</label><input type="number" step="1" data-account-capital="' + esc(a.name) + '" value="' + (Number(a.startingCapital) || 0) + '" /></div>';
+          html += '<div style="font-size:12.5px; color:var(--text-muted)">Aktueller Kontostand: <b style="font-family:var(--font-mono); color:' + (bal >= (Number(a.startingCapital) || 0) ? "var(--green)" : "var(--red)") + '">' + fmtMoney(bal) + '</b></div>';
+          html += '<button type="button" class="link-btn" data-action="add-withdrawal" data-account="' + esc(a.name) + '">+ Auszahlung eintragen</button>';
+          html += "</div>";
+          if ((a.withdrawals || []).length) {
+            html += '<div style="margin-top:8px">';
+            a.withdrawals.forEach(function (w) {
+              html += '<div class="wd-row"><span>' + esc(w.date) + (w.note ? " · " + esc(w.note) : "") + '</span>' +
+                '<span><span style="font-family:var(--font-mono)">-' + fmtMoney(w.amount) + '</span> ' +
+                '<button type="button" class="icon-btn" data-action="delete-withdrawal" data-account="' + esc(a.name) + '" data-wid="' + esc(w.id) + '" aria-label="Auszahlung löschen">&#10005;</button></span></div>';
+            });
+            html += "</div>";
+          }
+          html += '<label style="display:block; margin-top:10px; font-size:12.5px; color:var(--text-muted); cursor:pointer; line-height:1.5">' +
+            '<input type="checkbox" data-account-riskmodel="' + esc(a.name) + '"' + (a.riskModel ? " checked" : "") + ' style="width:auto; vertical-align:middle; margin-right:7px" /> ' +
+            "Gestaffeltes Risikomanagement automatisch anzeigen (1&nbsp;% Start-Risiko, halbiert sich je Verlust-Stufe)</label>";
+          html += "</div>";
+        }
+      });
+    }
+    html += '<div class="account-manage-hint">Standard-Symbol: wird bei neuen Trades automatisch ausgewählt. Beim Livemarkt-Konto trägst du den Gewinn/Verlust je Trade in $ ein; Startkapital und Auszahlungen ergeben zusammen den Kontostand. Löschen entfernt nur den Account aus der Auswahl – bereits gespeicherte Trades bleiben erhalten.</div>';
+    html += "</div>";
+    return html;
+  }
+
+  function renderRiskPanel(acc) {
+    var stages = riskStages(acc.startingCapital);
+    if (!stages.length) return "";
+    var bal = accountBalance(acc);
+    var idx = findStageIndex(stages, bal);
+    var current = stages[idx];
+
+    var html = '<div class="card">';
+    html += '<div class="panel-header" style="margin-bottom:12px"><div class="panel-title">Risikomanagement · ' + esc(acc.name) + "</div></div>";
+
+    html += '<div class="risk-current">';
+    html += '<div class="risk-current-label">' + esc(current.label) + " · erlaubtes Risiko pro Trade jetzt</div>";
+    html += '<div class="risk-current-value">' + fmtMoney(current.risk) + "</div>";
+    html += '<div class="risk-current-sub">' + fmtRiskPct(current.riskPct) + " vom Startkapital · max. " + current.maxTrades +
+      " Trades in dieser Stufe · Kontostand: " + fmtMoney(bal) + "</div>";
+    html += "</div>";
+
+    html += '<div style="overflow-x:auto; margin-top:14px"><table><thead><tr>';
+    ["Stufe", "Kontostand-Schwelle", "Risiko pro Trade", "Risiko in %", "Max. Trades", "Kum. Verlust"].forEach(function (h) {
+      html += "<th>" + h + "</th>";
+    });
+    html += "</tr></thead><tbody>";
+    stages.forEach(function (s, i) {
+      var isCurrent = i === idx;
+      html += "<tr" + (isCurrent ? ' class="risk-row-active"' : "") + ">";
+      html += '<td style="text-align:left">' + esc(s.label) +
+        (isCurrent ? ' <span class="pill" style="background:var(--accent-bg);color:var(--accent-strong)">aktuell</span>' : "") + "</td>";
+      html += '<td style="text-align:right">' + fmtMoney(s.high) + " – " + fmtMoney(s.low) + "</td>";
+      html += '<td style="text-align:right;font-weight:700">' + fmtMoney(s.risk) + "</td>";
+      html += '<td style="text-align:right">' + fmtRiskPct(s.riskPct) + "</td>";
+      html += '<td style="text-align:right">' + s.maxTrades + "</td>";
+      html += '<td style="text-align:right">' + fmtMoney(s.cumLoss) + "</td>";
+      html += "</tr>";
+    });
+    html += "</tbody></table></div>";
+    html += '<div class="account-manage-hint">Automatisch aus dem Startkapital berechnet: Start-Risiko 1&nbsp;% (4 Trades), danach halbiert sich das Risiko alle 2 Trades. Abschaltbar in den Account-Einstellungen (&#9881;&#65039;).</div>';
+    html += "</div>";
+    return html;
+  }
+
+  function renderFilterBar() {
+    var html = '<div class="card filter-row">';
+    html += '<div><label class="field-label">Nach Symbol filtern</label><select id="filter-symbol">';
+    html += '<option value="all"' + (state.filters.symbol === "all" ? " selected" : "") + '>Alle Symbole</option>';
+    state.lists.symbols.forEach(function (s) {
+      html += '<option value="' + esc(s) + '"' + (state.filters.symbol === s ? " selected" : "") + '>' + esc(s) + "</option>";
+    });
+    html += "</select></div>";
+    html += '<div><label class="field-label">Nach Setup filtern</label><select id="filter-setup">';
+    html += '<option value="all"' + (state.filters.setup === "all" ? " selected" : "") + '>Alle Setups</option>';
+    state.lists.setups.forEach(function (s) {
+      html += '<option value="' + esc(s) + '"' + (state.filters.setup === s ? " selected" : "") + '>' + esc(s) + "</option>";
+    });
+    html += "</select></div>";
+    html += "</div>";
+    return html;
+  }
+
+  function renderBreakdownTable(title, labelHeader, rows, unit) {
+    var html = '<div class="card">';
+    html += '<div class="form-section-title" style="margin-bottom:14px">' + esc(title) + "</div>";
+    if (rows.length === 0) {
+      html += '<div class="empty-note">Noch keine Trades für diese Auswahl.</div>';
+    } else {
+      html += '<div style="overflow-x:auto"><table><thead><tr>';
+      [labelHeader, "Trades", "Wins", "Losses", "BE", "Win-Rate", unit === "usd" ? "Gesamt $" : "Gesamt R", unit === "usd" ? "Ø Win $" : "Ø R (Wins)"].forEach(function (h) {
+        html += "<th>" + h + "</th>";
+      });
+      html += "</tr></thead><tbody>";
+      rows.forEach(function (r) {
+        var rColor = r.totalVal > 0 ? "var(--green)" : r.totalVal < 0 ? "var(--red)" : "var(--text-primary)";
+        html += "<tr>";
+        html += '<td style="text-align:left">' + esc(r.label) + "</td>";
+        html += '<td style="text-align:right">' + r.n + "</td>";
+        html += '<td style="text-align:right;color:var(--green)">' + r.wins + "</td>";
+        html += '<td style="text-align:right;color:var(--red)">' + r.losses + "</td>";
+        html += '<td style="text-align:right;color:var(--amber)">' + r.be + "</td>";
+        html += '<td style="text-align:right">' + r.winRate.toFixed(1) + "%</td>";
+        html += '<td style="text-align:right;font-family:var(--font-mono);font-weight:600;color:' + rColor + '">' + (unit === "usd" ? fmtMoney(r.totalVal) : fmtVal(r.totalVal, "r")) + "</td>";
+        html += '<td style="text-align:right;font-family:var(--font-mono);color:var(--green)">' + (r.wins ? (unit === "usd" ? fmtMoney(r.avgWin) : fmtVal(r.avgWin, "r")) : "–") + "</td>";
+        html += "</tr>";
+      });
+      html += "</tbody></table></div>";
+    }
+    html += "</div>";
+    return html;
+  }
+
+  function renderTimeBreakdown() {
+    var rows = timeSlotStats();
+    var unit = currentUnit();
+    var html = '<div class="card">';
+    html += '<div class="form-section-title" style="margin-bottom:4px">Auswertung nach Uhrzeit</div>';
+    html += '<div class="section-sub">Welche Uhrzeit hat wie viel ' + (unit === "usd" ? "$" : "R") + ' gebracht.</div>';
+    if (rows.length === 0) {
+      html += '<div class="empty-note">Noch keine Trades mit hinterlegter Uhrzeit.</div>';
+    } else {
+      html += '<div style="overflow-x:auto"><table><thead><tr>';
+      ["Uhrzeit", "Trades", "Wins", "Losses", "BE", "Win-Rate", unit === "usd" ? "Gesamt $" : "Gesamt R"].forEach(function (h) {
+        html += "<th>" + h + "</th>";
+      });
+      html += "</tr></thead><tbody>";
+      rows.forEach(function (r) {
+        var rColor = r.totalVal > 0 ? "var(--green)" : r.totalVal < 0 ? "var(--red)" : "var(--text-primary)";
+        html += "<tr>";
+        html += '<td style="text-align:left">' + esc(r.label) + "</td>";
+        html += '<td style="text-align:right">' + r.n + "</td>";
+        html += '<td style="text-align:right;color:var(--green)">' + r.wins + "</td>";
+        html += '<td style="text-align:right;color:var(--red)">' + r.losses + "</td>";
+        html += '<td style="text-align:right;color:var(--amber)">' + r.be + "</td>";
+        html += '<td style="text-align:right">' + r.winRate.toFixed(1) + "%</td>";
+        html += '<td style="text-align:right;font-family:var(--font-mono);font-weight:600;color:' + rColor + '">' + (unit === "usd" ? fmtMoney(r.totalVal) : fmtVal(r.totalVal, "r")) + "</td>";
+        html += "</tr>";
+      });
+      html += "</tbody></table></div>";
+    }
+    html += "</div>";
+    return html;
+  }
+
+  function loadPendingScreenshots() {
+    document.querySelectorAll("[data-shot-pending]").forEach(function (el) {
+      var id = el.getAttribute("data-shot-pending");
+      var trade = state.trades.find(function (t) { return t.id === id; });
+      if (!trade) return;
+      fetchShotBlobUrl(trade).then(function (url) {
+        el.src = url;
+        el.removeAttribute("data-shot-pending");
+        el.addEventListener("click", function () { openLightbox(url); });
+      }).catch(function () {
+        el.alt = "Screenshot konnte nicht geladen werden";
+        el.removeAttribute("data-shot-pending");
+      });
+    });
+  }
+
+  function chipGroupHtml(field, values, selected, opts) {
+    opts = opts || {};
+    var html = '<div class="chip-group" data-field="' + field + '">';
+    if (opts.blankLabel) {
+      html += '<button type="button" class="chip' + (selected === "" ? " active" : "") +
+        '" data-action="chip-select" data-field="' + field + '" data-value="">' + esc(opts.blankLabel) + "</button>";
+    }
+    values.forEach(function (v) {
+      html += '<button type="button" class="chip' + (v === selected ? " active" : "") +
+        '" data-action="chip-select" data-field="' + field + '" data-value="' + esc(v) + '">' + esc(v) + "</button>";
+    });
+    html += '<button type="button" class="chip chip-add" data-action="chip-add" data-field="' + field + '">+ ' + esc(opts.addLabel || "Neu") + "</button>";
+    html += "</div>";
+    return html;
+  }
+
+  function calendarYearRange() {
+    var years = {};
+    var cur = new Date().getFullYear();
+    for (var i = cur - 3; i <= cur + 1; i++) years[i] = true;
+    years[state.calMonth.y] = true;
+    state.trades.forEach(function (t) {
+      if (t.date) years[Number(t.date.slice(0, 4))] = true;
+    });
+    return Object.keys(years).map(Number).sort(function (a, b) { return a - b; });
+  }
+
+  function renderYearlyCalendar() {
+    var trades = filteredTrades();
+    var unit = currentUnit();
+    var y = state.yearCalYear;
+    var byMonth = {};
+    for (var i = 0; i < 12; i++) byMonth[i] = [];
+    trades.forEach(function (t) {
+      var d = t.date.split("-");
+      if (Number(d[0]) === y) byMonth[Number(d[1]) - 1].push(t);
+    });
+
+    var html = '<div class="card">';
+    html += '<div class="cal-header"><div class="panel-title">Jahreskalender</div>';
+    html += '<div class="yearcal-tabs">';
+    [["winrate", "Win-Rate"], ["pnl", unit === "usd" ? "$ P&amp;L" : "R"], ["trades", "Trades"]].forEach(function (v) {
+      html += '<button type="button" class="yearcal-tab' + (state.yearCalView === v[0] ? " active" : "") + '" data-action="yearcal-view" data-view="' + v[0] + '">' + v[1] + "</button>";
+    });
+    html += "</div>";
+    html += '<div class="nav-row"><button class="nav-btn" data-action="yearcal-prev">&#8592;</button>' +
+      '<button class="nav-btn" data-action="yearcal-next">&#8594;</button></div>';
+    html += "</div>";
+
+    html += '<div class="yearcal-grid">';
+    ["Jahr"].concat(MONTH_SHORT).concat(["Total"]).forEach(function (h) { html += '<div class="yearcal-head">' + h + "</div>"; });
+
+    html += '<div class="yearcal-cell year-cell">' + y + "</div>";
+    var allTrades = [];
+    for (var m = 0; m < 12; m++) {
+      var mTrades = byMonth[m];
+      allTrades = allTrades.concat(mTrades);
+      html += yearcalCell(mTrades, unit, m, true);
+    }
+    html += yearcalCell(allTrades, unit, -1, false);
+    html += "</div></div>";
+    return html;
+  }
+
+  function yearcalCell(trades, unit, monthIdx, clickable) {
+    var cls = "yearcal-cell" + (clickable ? " clickable" : "");
+    var action = clickable ? ' data-action="yearcal-goto-month" data-month="' + monthIdx + '"' : "";
+    if (!trades.length) return '<div class="' + cls + '"' + action + '><span style="color:var(--text-faint)">--</span></div>';
+    var s = computeStats(trades);
+    var bg = "var(--surface-alt)", color = "var(--text-primary)";
+    if (state.yearCalView === "pnl") {
+      if (s.totalVal > 0) { bg = "var(--green-bg-strong)"; color = "var(--green)"; }
+      else if (s.totalVal < 0) { bg = "var(--red-bg-strong)"; color = "var(--red)"; }
+    } else if (state.yearCalView === "winrate") {
+      if (s.winRate >= 50) { bg = "var(--green-bg-strong)"; color = "var(--green)"; }
+      else { bg = "var(--red-bg-strong)"; color = "var(--red)"; }
+    } else {
+      bg = "var(--accent-bg)"; color = "var(--accent-strong)";
+    }
+    var mainVal;
+    if (state.yearCalView === "pnl") mainVal = unit === "usd" ? fmtMoney(s.totalVal) : fmtVal(s.totalVal, "r");
+    else if (state.yearCalView === "winrate") mainVal = s.winRate.toFixed(0) + "%";
+    else mainVal = String(s.n);
+    return '<div class="' + cls + '" style="background:' + bg + '; color:' + color + ';"' + action + '>' +
+      '<span class="yc-val">' + esc(mainVal) + '</span><span class="yc-sub">' + s.n + " Trade" + (s.n !== 1 ? "s" : "") + '</span></div>';
+  }
+
+  function renderCalendar(byDate) {
+    var y = state.calMonth.y, m = state.calMonth.m;
+    var first = new Date(y, m, 1);
+    var offset = (first.getDay() + 6) % 7;
+    var daysInMonth = new Date(y, m + 1, 0).getDate();
+    var years = calendarYearRange();
+
+    var html = '<div class="card">';
+    html += '<div class="cal-header"><div class="cal-title-row">';
+    html += '<select id="cal-month-select" class="compact-select" aria-label="Monat wählen">';
+    MONTH_NAMES.forEach(function (name, idx) {
+      html += '<option value="' + idx + '"' + (idx === m ? " selected" : "") + '>' + name + "</option>";
+    });
+    html += "</select>";
+    html += '<select id="cal-year-select" class="compact-select" aria-label="Jahr wählen">';
+    years.forEach(function (yr) {
+      html += '<option value="' + yr + '"' + (yr === y ? " selected" : "") + '>' + yr + "</option>";
+    });
+    html += "</select>";
+    html += '<input type="date" id="cal-jump" class="compact-select" aria-label="Datum direkt wählen" value="' + (state.selectedDate || "") + '" />';
+    html += "</div>";
+    html += '<div class="nav-row">';
+    html += '<button class="nav-btn" data-action="prev-month">&#8592;</button>';
+    html += '<button class="nav-btn" data-action="today">Heute</button>';
+    html += '<button class="nav-btn" data-action="next-month">&#8594;</button>';
+    html += "</div></div>";
+
+    html += '<div class="weekday-row">';
+    WEEKDAYS.forEach(function (w) { html += '<div class="weekday">' + w + "</div>"; });
+    html += "</div>";
+
+    html += '<div class="day-grid">';
+    for (var i = 0; i < offset; i++) html += "<div></div>";
+    for (var d = 1; d <= daysInMonth; d++) {
+      var iso = y + "-" + String(m + 1).padStart(2, "0") + "-" + String(d).padStart(2, "0");
+      var dayTrades = byDate[iso] || [];
+      var v = dayVisualClass(dayTrades);
+      var selectedCls = state.selectedDate === iso ? " selected" : "";
+      var borderStyle = state.selectedDate === iso ? "border:1.5px solid var(--accent);" : ("border:1px solid " + v.border + ";");
+      html += '<button class="day-cell' + selectedCls + '" style="background:' + v.bg + ";" + borderStyle + '" data-action="select-day" data-date="' + iso + '">';
+      html += '<span class="day-num">' + d + "</span>";
+      if (dayTrades.length > 0) {
+        var sum = dayTrades.reduce(function (s, t) { return s + t.value; }, 0);
+        var wins = dayTrades.filter(function (t) { return t.outcome === "win"; }).length;
+        var losses = dayTrades.filter(function (t) { return t.outcome === "loss"; }).length;
+        html += '<span class="day-r" style="color:' + v.color + '">' + (dayTrades[0].unit === "usd" ? fmtMoney(sum) : fmtVal(sum, "r")) + "</span>";
+        html += '<span class="day-count">' + dayTrades.length + " Trade" + (dayTrades.length > 1 ? "s" : "") + "</span>";
+        html += '<span class="day-wl">' + wins + "W / " + losses + "L</span>";
+      }
+      html += "</button>";
+    }
+    html += "</div>";
+
+    html += '<div class="legend-row">';
+    html += legendItem("var(--green)", "Gewinntag");
+    html += legendItem("var(--red)", "Verlusttag");
+    html += legendItem("var(--amber)", "Break-Even");
+    html += legendItem("var(--text-faint)", "Kein Trade");
+    html += "</div>";
+
+    html += "</div>";
+    return html;
+  }
+
+  function legendItem(color, label) {
+    return '<span class="legend-item"><span class="legend-dot" style="background:' + color + '"></span>' + label + "</span>";
+  }
+
+  function openEditTrade(id) {
+    var t = state.trades.find(function (x) { return x.id === id; });
+    if (!t) return;
+    state.editTradeId = id;
+    state.editShot = null;
+    state.editRemoveShot = false;
+    render();
+  }
+
+  function closeEditModal() {
+    state.editTradeId = null;
+    state.editShot = null;
+    state.editRemoveShot = false;
+    render();
+  }
+
+  function renderEditModal() {
+    var t = state.trades.find(function (x) { return x.id === state.editTradeId; });
+    if (!t) return "";
+    var acc = findAccount(t.account);
+    var isUsd = !!(acc && acc.type === "usd");
+
+    var html = '<div class="modal-overlay" id="edit-modal-overlay"><div class="modal-card">';
+    html += '<div class="panel-header"><div class="panel-title">Trade bearbeiten</div>' +
+      '<button type="button" class="icon-btn" data-edit-action="cancel" aria-label="Schließen">&#10005;</button></div>';
+    html += '<form id="edit-trade-form">';
+
+    html += '<div class="form-grid" style="margin-bottom:14px">';
+    html += '<div><label class="field-label">Datum</label><input type="date" id="e-date" value="' + esc(t.date) + '" /></div>';
+    html += '<div><label class="field-label">Uhrzeit</label><input type="text" id="e-time" list="e-time-list" value="' +
+      esc(t.time || "") + '" placeholder="z. B. 08:00–08:30" />';
+    html += '<datalist id="e-time-list">';
+    TIME_SLOTS.forEach(function (s) { html += '<option value="' + esc(s) + '"></option>'; });
+    html += '</datalist></div>';
+    html += '</div>';
+
+    html += '<div class="form-grid" style="margin-bottom:14px">';
+    html += '<div><label class="field-label">Symbol</label><input type="text" id="e-symbol" list="e-symbol-list" value="' +
+      esc(t.symbol || "") + '" /><datalist id="e-symbol-list">';
+    state.lists.symbols.forEach(function (s) { html += '<option value="' + esc(s) + '"></option>'; });
+    html += '</datalist></div>';
+    html += '<div><label class="field-label">Setup</label><input type="text" id="e-setup" list="e-setup-list" value="' +
+      esc(t.setup || "") + '" /><datalist id="e-setup-list">';
+    state.lists.setups.forEach(function (s) { html += '<option value="' + esc(s) + '"></option>'; });
+    html += '</datalist></div>';
+    html += '</div>';
+
+    html += '<div class="form-grid" style="margin-bottom:14px">';
+    html += '<div><label class="field-label">Account</label><select id="e-account">';
+    state.lists.accounts.forEach(function (a) {
+      html += '<option value="' + esc(a.name) + '"' + (a.name === t.account ? " selected" : "") + '>' + esc(a.name) + '</option>';
+    });
+    html += '</select></div>';
+    html += '</div>';
+
+    html += '<div class="form-grid" style="margin-bottom:14px">';
+    html += '<div id="e-value-r" style="display:' + (isUsd ? "none" : "block") +
+      '"><label class="field-label">R-Multiple</label><input type="number" step="0.1" id="e-r" value="' + (Number(t.r) || 0) + '" /></div>';
+    html += '<div id="e-value-pnl" style="display:' + (isUsd ? "block" : "none") +
+      '"><label class="field-label">$-Betrag</label><input type="number" step="0.01" id="e-pnl" value="' + (Number(t.pnl) || 0) + '" /></div>';
+    html += '<div id="e-value-commission" style="display:' + (isUsd ? "block" : "none") +
+      '"><label class="field-label">Kommission ($)</label><input type="number" step="0.01" id="e-commission" value="' + (Number(t.commission) || 0) + '" /></div>';
+    html += '</div>';
+
+    html += '<div style="margin-bottom:12px"><label class="field-label">Notizen</label><textarea id="e-notes" rows="2">' +
+      esc(t.notes || "") + '</textarea></div>';
+
+    html += '<div style="margin-bottom:14px"><label class="field-label">Screenshot</label>';
+    if (t.hasScreenshot && !state.editRemoveShot) {
+      html += '<div style="display:flex; align-items:center; gap:10px; margin-bottom:8px; flex-wrap:wrap">' +
+        '<span style="font-size:12.5px; color:var(--text-muted)">Aktueller Screenshot vorhanden</span>' +
+        '<button type="button" class="link-btn" data-edit-action="remove-shot" style="color:var(--red)">Entfernen</button></div>';
+    } else if (t.hasScreenshot && state.editRemoveShot) {
+      html += '<div style="display:flex; align-items:center; gap:10px; margin-bottom:8px; flex-wrap:wrap">' +
+        '<span style="font-size:12.5px; color:var(--red)">Screenshot wird beim Speichern entfernt</span>' +
+        '<button type="button" class="link-btn" data-edit-action="undo-remove-shot">Rückgängig</button></div>';
+    }
+    if (state.editShot) {
+      html += '<div style="font-size:12.5px; color:var(--green); margin-bottom:8px">Neuer Screenshot ausgewählt (wird beim Speichern hochgeladen)</div>';
+    }
+    html += '<input type="file" id="e-file" accept="image/*" /></div>';
+
+    html += '<div id="edit-form-error"></div>';
+    html += '<div style="display:flex; justify-content:flex-end; gap:8px; margin-top:6px">' +
+      '<button type="button" class="nav-btn" data-edit-action="cancel">Abbrechen</button>' +
+      '<button type="submit" class="primary-btn">Änderungen speichern</button></div>';
+
+    html += '</form></div></div>';
+    return html;
+  }
+
+  function attachEditModalEvents() {
+    var overlay = document.getElementById("edit-modal-overlay");
+    if (!overlay) return;
+
+    overlay.addEventListener("mousedown", function (e) {
+      if (e.target === overlay) closeEditModal();
+    });
+
+    overlay.querySelectorAll("[data-edit-action]").forEach(function (el) {
+      el.addEventListener("click", function () {
+        var action = el.getAttribute("data-edit-action");
+        if (action === "cancel") { closeEditModal(); }
+        else if (action === "remove-shot") { state.editRemoveShot = true; render(); }
+        else if (action === "undo-remove-shot") { state.editRemoveShot = false; render(); }
+      });
+    });
+
+    var accSel = document.getElementById("e-account");
+    if (accSel) {
+      accSel.addEventListener("change", function () {
+        var acc = findAccount(accSel.value);
+        var isUsd = !!(acc && acc.type === "usd");
+        document.getElementById("e-value-r").style.display = isUsd ? "none" : "block";
+        document.getElementById("e-value-pnl").style.display = isUsd ? "block" : "none";
+        document.getElementById("e-value-commission").style.display = isUsd ? "block" : "none";
+      });
+    }
+
+    var fileInput = document.getElementById("e-file");
+    if (fileInput) {
+      fileInput.addEventListener("change", function (e) {
+        var file = e.target.files && e.target.files[0];
+        if (!file) return;
+        readFileToDataUrl(file, function (dataUrl) {
+          state.editShot = dataUrl;
+          state.editRemoveShot = false;
+          render();
+        });
+      });
+    }
+
+    var form = document.getElementById("edit-trade-form");
+    if (form) {
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var errorEl = document.getElementById("edit-form-error");
+        var t = state.trades.find(function (x) { return x.id === state.editTradeId; });
+        if (!t) { closeEditModal(); return; }
+
+        var accName = document.getElementById("e-account").value;
+        var acc = findAccount(accName);
+        if (!acc) {
+          errorEl.innerHTML = '<div class="error-text">Bitte einen gültigen Account wählen.</div>';
+          return;
+        }
+        var isUsd = acc.type === "usd";
+        var rVal = 0, pnlVal = 0, commissionVal = 0;
+        if (isUsd) {
+          var pnlStr = document.getElementById("e-pnl").value;
+          if (pnlStr === "" || isNaN(pnlStr)) {
+            errorEl.innerHTML = '<div class="error-text">Bitte einen $-Betrag eingeben, z. B. 250 oder -120.</div>';
+            return;
+          }
+          pnlVal = Number(pnlStr);
+          var commissionStr = document.getElementById("e-commission").value;
+          if (commissionStr !== "" && !isNaN(commissionStr)) commissionVal = Number(commissionStr);
+        } else {
+          var rStr = document.getElementById("e-r").value;
+          if (rStr === "" || isNaN(rStr)) {
+            errorEl.innerHTML = '<div class="error-text">Bitte einen R-Wert eingeben, z. B. 1.5 oder -1.</div>';
+            return;
+          }
+          rVal = Number(rStr);
+        }
+
+        var newDate = document.getElementById("e-date").value || t.date;
+        var updated = {
+          id: t.id,
+          date: newDate,
+          symbol: (document.getElementById("e-symbol").value || "").trim().toUpperCase(),
+          setup: (document.getElementById("e-setup").value || "").trim(),
+          account: accName,
+          direction: t.direction || "",
+          time: (document.getElementById("e-time").value || "").trim(),
+          r: rVal,
+          pnl: pnlVal,
+          commission: commissionVal,
+          notes: document.getElementById("e-notes").value.trim(),
+          hasScreenshot: t.hasScreenshot && !state.editRemoveShot,
+          screenshotPath: (t.hasScreenshot && !state.editRemoveShot) ? t.screenshotPath : "",
+          createdAt: t.createdAt
+        };
+
+        var submitBtn = form.querySelector('button[type="submit"]');
+        if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = "Speichere …"; }
+
+        updateTradeInObsidian(t, updated, {
+          newShot: state.editShot,
+          removeShot: state.editRemoveShot
+        }).then(function () {
+          if (state.editShot) state.shotCache[updated.id] = state.editShot;
+          if (state.editRemoveShot) delete state.shotCache[updated.id];
+          var idx = state.trades.findIndex(function (x) { return x.id === updated.id; });
+          if (idx !== -1) state.trades[idx] = updated;
+          mergeDiscoveredValues([updated]);
+          state.editTradeId = null;
+          state.editShot = null;
+          state.editRemoveShot = false;
+          state.saveError = "";
+          render();
+        }).catch(function (e) {
+          errorEl.innerHTML = '<div class="error-text">' + esc((e && e.message) || String(e)) + "</div>";
+          if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = "Änderungen speichern"; }
+        });
+      });
+    }
+  }
+
+  function renderDayPanel(trades) {
+    var html = '<div class="card" id="day-panel">';
+    html += '<div class="panel-header"><div class="panel-title">' + fmtDateLong(state.selectedDate) + '</div>';
+    html += '<button class="icon-btn" data-action="close-day" aria-label="Schließen">&#10005;</button></div>';
+
+    trades.forEach(function (t) {
+      html += '<div class="trade-item">';
+      html += '<div class="trade-item-top"><div class="trade-badges">';
+      var color = t.outcome === "win" ? "var(--green)" : t.outcome === "loss" ? "var(--red)" : "var(--amber)";
+      html += '<span class="r-value" style="color:' + color + '">' + (t.unit === "usd" ? fmtMoney(t.value) : fmtVal(t.value, "r")) + "</span>";
+      if (t.symbol) html += '<span class="pill pill-symbol">' + esc(t.symbol) + "</span>";
+      if (t.setup) html += '<span class="pill pill-setup">' + esc(t.setup) + "</span>";
+      if (t.account) html += '<span class="pill pill-account">' + esc(t.account) + "</span>";
+      if (t.direction) html += '<span class="pill ' + (t.direction === "long" ? "pill-long" : "pill-short") + '">' + (t.direction === "long" ? "Long" : "Short") + "</span>";
+      if (t.time) html += '<span class="pill pill-time">' + esc(t.time) + "</span>";
+      if (t.unit === "usd" && Number(t.commission)) html += '<span class="pill pill-account">Kommission: -' + fmtMoney(Math.abs(Number(t.commission))) + "</span>";
+      html += '</div><div style="display:flex; gap:2px; flex-shrink:0"><button class="icon-btn" data-action="edit-trade" data-id="' + t.id + '" aria-label="Trade bearbeiten">&#9998;</button><button class="icon-btn" data-action="delete-trade" data-id="' + t.id + '" aria-label="Trade löschen">&#128465;</button></div></div>';
+      if (t.notes) html += '<div class="trade-notes">' + esc(t.notes) + "</div>";
+      if (t.hasScreenshot) {
+        var cached = state.shotCache[t.id];
+        if (cached) {
+          html += '<img class="trade-shot" src="' + cached + '" data-action="open-lightbox" data-src="' + cached + '" alt="Chart-Screenshot" />';
+        } else {
+          html += '<img class="trade-shot" data-shot-pending="' + t.id + '" alt="Chart-Screenshot wird geladen …" style="min-height:60px; background:var(--surface-alt)" />';
+        }
+      }
+      html += "</div>";
+    });
+
+    if (!settingsReady()) {
+      html += '<div class="empty-note" style="border-top:1px solid var(--border); padding-top:16px">Verbinde zuerst Obsidian oben, um neue Trades zu speichern.</div>';
+      html += "</div>";
+      return html;
+    }
+
+    if (!state.formSelections.account) resetFormSelections();
+    var selAcc = findAccount(state.formSelections.account);
+    var isUsd = !!(selAcc && selAcc.type === "usd");
+
+    html += '<form id="trade-form" style="border-top:' + (trades.length ? "1px solid var(--border)" : "none") + '; padding-top:' + (trades.length ? "16px" : "0") + '">';
+    html += '<div class="form-section-title">Trade hinzufügen</div>';
+    html += '<div class="form-grid" style="margin-bottom:14px">';
+    html += '<div id="value-field-r" style="display:' + (isUsd ? "none" : "block") + '"><label class="field-label">R-Multiple</label><input type="number" step="0.1" id="f-r" placeholder="z. B. 1.5 oder -1" /></div>';
+    html += '<div id="value-field-usd" style="display:' + (isUsd ? "block" : "none") + '"><label class="field-label">$-Betrag (Gewinn/Verlust)</label><input type="number" step="0.01" id="f-pnl" placeholder="z. B. 250 oder -120" /></div>';
+    html += '<div id="value-field-commission" style="display:' + (isUsd ? "block" : "none") + '"><label class="field-label">Kommission / Gebühren ($, optional)</label><input type="number" step="0.01" id="f-commission" placeholder="z. B. 5.20" /></div>';
+    html += "</div>";
+
+    html += '<div class="chip-field"><label class="field-label">Symbol (optional)</label>' +
+      chipGroupHtml("symbol", state.lists.symbols, state.formSelections.symbol, { blankLabel: "–" }) + "</div>";
+    html += '<div class="chip-field"><label class="field-label">Setup / Strategie (optional)</label>' +
+      chipGroupHtml("setup", state.lists.setups, state.formSelections.setup, { blankLabel: "–" }) + "</div>";
+    html += '<div class="chip-field"><label class="field-label">Account</label>' +
+      chipGroupHtml("account", accountNames(), state.formSelections.account, {}) + "</div>";
+    html += '<div class="chip-field"><label class="field-label">Uhrzeit (optional, 8–12 Uhr)</label>' +
+      chipGroupHtml("time", TIME_SLOTS, state.formSelections.time, { blankLabel: "–", addLabel: "Andere Zeit" }) + "</div>";
+
+    html += '<div style="margin-bottom:12px"><label class="field-label">Notizen (optional)</label><textarea id="f-notes" rows="2" placeholder="Setup, Emotionen, Lessons Learned …"></textarea></div>';
+    html += '<div style="margin-bottom:12px"><label class="field-label">TradingView-Screenshot (optional)</label>';
+    html += '<div id="dropzone" class="dropzone" tabindex="0"></div>';
+    html += '<input type="file" id="f-file" accept="image/*" style="display:none" />';
+    html += "</div>";
+    html += '<div id="form-error"></div>';
+    html += '<div style="display:flex; justify-content:flex-end"><button type="submit" class="primary-btn">+ Trade speichern</button></div>';
+    html += "</form>";
+
+    html += "</div>";
+    return html;
+  }
+
+  function renderPeriodTable() {
+    var rows = periodRows();
+    var unit = currentUnit();
+    var html = '<div class="card">';
+    html += '<div class="form-section-title" style="margin-bottom:14px">Monatsauswertung</div>';
+    if (rows.length === 0) {
+      html += '<div class="empty-note">Noch keine Trades – die Monatsauswertung erscheint nach deinem ersten Eintrag.</div>';
+    } else {
+      html += '<div style="overflow-x:auto"><table><thead><tr>';
+      ["Zeitraum","Trades","Wins","Losses","BE","Win-Rate", unit === "usd" ? "Gesamt $" : "Gesamt R", unit === "usd" ? "Ø $" : "Ø R"].forEach(function (h) {
+        html += "<th>" + h + "</th>";
+      });
+      html += "</tr></thead><tbody>";
+      rows.forEach(function (r) {
+        var rColor = r.totalVal > 0 ? "var(--green)" : r.totalVal < 0 ? "var(--red)" : "var(--text-primary)";
+        html += "<tr>";
+        html += '<td style="text-align:left">' + r.key + "</td>";
+        html += '<td style="text-align:right">' + r.n + "</td>";
+        html += '<td style="text-align:right;color:var(--green)">' + r.wins + "</td>";
+        html += '<td style="text-align:right;color:var(--red)">' + r.losses + "</td>";
+        html += '<td style="text-align:right;color:var(--amber)">' + r.be + "</td>";
+        html += '<td style="text-align:right">' + r.winRate.toFixed(1) + "%</td>";
+        html += '<td style="text-align:right;font-family:var(--font-mono);font-weight:600;color:' + rColor + '">' + (unit === "usd" ? fmtMoney(r.totalVal) : fmtVal(r.totalVal, "r")) + "</td>";
+        html += '<td style="text-align:right;font-family:var(--font-mono);color:var(--text-muted)">' + (unit === "usd" ? fmtMoney(r.avgVal) : fmtVal(r.avgVal, "r")) + "</td>";
+        html += "</tr>";
+      });
+      html += "</tbody></table></div>";
+    }
+    html += "</div>";
+    return html;
+  }
+
+  // ---------- Events ----------
+
+  function updateValueFieldVisibility() {
+    var acc = findAccount(state.formSelections.account);
+    var isUsd = !!(acc && acc.type === "usd");
+    var rBox = document.getElementById("value-field-r");
+    var uBox = document.getElementById("value-field-usd");
+    var cBox = document.getElementById("value-field-commission");
+    if (rBox) rBox.style.display = isUsd ? "none" : "block";
+    if (uBox) uBox.style.display = isUsd ? "block" : "none";
+    if (cBox) cBox.style.display = isUsd ? "block" : "none";
+  }
+
+  function activateChipInGroup(field, value) {
+    var group = document.querySelector('.chip-group[data-field="' + field + '"]');
+    if (!group) return null;
+    var matched = null;
+    group.querySelectorAll(".chip").forEach(function (c) {
+      var isMatch = c.getAttribute("data-value") === value;
+      c.classList.toggle("active", isMatch);
+      if (isMatch) matched = c;
+    });
+    return matched;
+  }
+
+  function selectChip(field, value, btnEl) {
+    state.formSelections[field] = value;
+    var group = btnEl ? btnEl.closest(".chip-group") : document.querySelector('.chip-group[data-field="' + field + '"]');
+    if (group) {
+      group.querySelectorAll(".chip").forEach(function (c) { c.classList.remove("active"); });
+      if (btnEl) btnEl.classList.add("active");
+    }
+    if (field === "account") {
+      var acc = findAccount(value);
+      var defSym = (acc && acc.defaultSymbol) ? acc.defaultSymbol : "";
+      if (defSym) {
+        state.formSelections.symbol = defSym;
+        if (!activateChipInGroup("symbol", defSym)) {
+          appendChip("symbol", defSym, true);
+        }
+      }
+      updateValueFieldVisibility();
+    }
+  }
+
+  function appendChip(field, value, makeActive) {
+    var group = document.querySelector('.chip-group[data-field="' + field + '"]');
+    if (!group) return;
+    var addBtn = group.querySelector(".chip-add");
+    if (makeActive) group.querySelectorAll(".chip").forEach(function (c) { c.classList.remove("active"); });
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "chip" + (makeActive ? " active" : "");
+    btn.setAttribute("data-action", "chip-select");
+    btn.setAttribute("data-field", field);
+    btn.setAttribute("data-value", value);
+    btn.textContent = value;
+    btn.addEventListener("click", function () { selectChip(field, value, btn); });
+    if (addBtn) group.insertBefore(btn, addBtn); else group.appendChild(btn);
+    return btn;
+  }
+
+  function handleChipAdd(field) {
+    if (field === "time") {
+      var customTime = window.prompt("Eigene Uhrzeit eingeben (z. B. 09:15–09:45):");
+      if (customTime && customTime.trim()) {
+        var btn = appendChip("time", customTime.trim(), true);
+        state.formSelections.time = customTime.trim();
+      }
+      return;
+    }
+    var labels = { symbol: "Symbol", setup: "Setup / Strategie", account: "Account" };
+    var val = window.prompt("Neuen Wert für „" + (labels[field] || field) + "“ hinzufügen:");
+    if (!val || !val.trim()) return;
+    val = val.trim();
+    if (field === "symbol") val = val.toUpperCase();
+    if (field === "account") {
+      if (accountNames().indexOf(val) === -1) {
+        state.lists.accounts.push({ name: val, defaultSymbol: "", type: "r" });
+        persistLists();
+      }
+    } else {
+      var listKey = field + "s";
+      if (state.lists[listKey].indexOf(val) === -1) {
+        state.lists[listKey].push(val);
+        persistLists();
+      }
+    }
+    appendChip(field, val, true);
+    state.formSelections[field] = val;
+    if (field === "account") updateValueFieldVisibility();
+  }
+
+  function renderDropzone() {
+    var dz = document.getElementById("dropzone");
+    if (!dz) return;
+    if (state.formShot) {
+      dz.classList.add("has-image");
+      dz.innerHTML = '<div style="position:relative; display:inline-block">' +
+        '<img src="' + state.formShot + '" style="max-height:160px; border-radius:6px; display:block" />' +
+        '<button type="button" id="remove-shot" style="position:absolute; top:-8px; right:-8px; background:var(--bg); border:1px solid var(--border); border-radius:50%; color:var(--text-muted); width:22px; height:22px;">&#10005;</button>' +
+        "</div>";
+      document.getElementById("remove-shot").addEventListener("click", function (e) {
+        e.stopPropagation();
+        state.formShot = null;
+        renderDropzone();
+      });
+    } else {
+      dz.classList.remove("has-image");
+      dz.innerHTML = '<div style="display:flex; flex-direction:column; align-items:center; gap:6px">' +
+        '<span>&#8593;</span><span>Screenshot einfügen (Strg+V, Feld anklicken) oder klicken zum Hochladen</span></div>';
+    }
+  }
+
+  function openLightbox(src) {
+    var lb = document.getElementById("lightbox");
+    lb.innerHTML = '<img src="' + src + '" alt="Chart-Screenshot vergrößert" />';
+    lb.style.display = "flex";
+    lb.onclick = function () { lb.style.display = "none"; lb.innerHTML = ""; };
+  }
+
+  function attachEvents() {
+    var app = document.getElementById("app");
+
+    app.querySelectorAll("[data-action]").forEach(function (el) {
+      var action = el.getAttribute("data-action");
+      el.addEventListener("click", function (e) {
+        if (action === "select-day") {
+          state.selectedDate = el.getAttribute("data-date");
+          state.formShot = null;
+          resetFormSelections();
+          state.scrollToDayPanel = true;
+          render();
+        } else if (action === "close-day") {
+          state.selectedDate = null;
+          state.formShot = null;
+          render();
+        } else if (action === "prev-month") {
+          if (state.calMonth.m === 0) { state.calMonth = { y: state.calMonth.y - 1, m: 11 }; }
+          else { state.calMonth = { y: state.calMonth.y, m: state.calMonth.m - 1 }; }
+          render();
+        } else if (action === "next-month") {
+          if (state.calMonth.m === 11) { state.calMonth = { y: state.calMonth.y + 1, m: 0 }; }
+          else { state.calMonth = { y: state.calMonth.y, m: state.calMonth.m + 1 }; }
+          render();
+        } else if (action === "today") {
+          var d = new Date();
+          state.calMonth = { y: d.getFullYear(), m: d.getMonth() };
+          render();
+        } else if (action === "set-theme") {
+          state.theme = el.getAttribute("data-theme");
+          persistTheme(state.theme);
+          render();
+        } else if (action === "yearcal-view") {
+          state.yearCalView = el.getAttribute("data-view");
+          render();
+        } else if (action === "yearcal-prev") {
+          state.yearCalYear -= 1;
+          render();
+        } else if (action === "yearcal-next") {
+          state.yearCalYear += 1;
+          render();
+        } else if (action === "yearcal-goto-month") {
+          var mi = Number(el.getAttribute("data-month"));
+          state.calMonth = { y: state.yearCalYear, m: mi };
+          render();
+        } else if (action === "edit-trade") {
+          openEditTrade(el.getAttribute("data-id"));
+        } else if (action === "delete-trade") {
+          var id = el.getAttribute("data-id");
+          var trade = state.trades.find(function (t) { return t.id === id; });
+          if (!trade) return;
+          deleteTradeFromObsidian(trade).then(function () {
+            state.trades = state.trades.filter(function (t) { return t.id !== id; });
+            state.saveError = "";
+            render();
+          }).catch(function (e) {
+            state.saveError = "Löschen fehlgeschlagen: " + ((e && e.message) || e);
+            render();
+          });
+        } else if (action === "ask-clear") {
+          state.confirmClear = true;
+          render();
+        } else if (action === "cancel-clear") {
+          state.confirmClear = false;
+          render();
+        } else if (action === "confirm-clear") {
+          Promise.all(state.trades.map(function (t) { return deleteTradeFromObsidian(t); })).then(function () {
+            state.trades = [];
+            state.confirmClear = false;
+            state.selectedDate = null;
+            state.saveError = "";
+            render();
+          }).catch(function (e) {
+            state.saveError = "Löschen fehlgeschlagen: " + ((e && e.message) || e);
+            state.confirmClear = false;
+            render();
+          });
+        } else if (action === "open-lightbox") {
+          openLightbox(el.getAttribute("data-src"));
+        } else if (action === "obs-toggle-settings") {
+          state.settingsOpen = !state.settingsOpen;
+          render();
+        } else if (action === "obs-reload") {
+          fetchTradesFromObsidian();
+        } else if (action === "select-account") {
+          state.filters.account = el.getAttribute("data-account");
+          render();
+        } else if (action === "select-unit") {
+          state.filters.unit = el.getAttribute("data-unit");
+          render();
+        } else if (action === "toggle-compare") {
+          state.compare.open = !state.compare.open;
+          render();
+        } else if (action === "toggle-compare-account") {
+          var cmpName = el.getAttribute("data-account");
+          var idx = state.compare.accounts.indexOf(cmpName);
+          if (idx === -1) state.compare.accounts.push(cmpName);
+          else state.compare.accounts.splice(idx, 1);
+          render();
+        } else if (action === "add-account") {
+          var newAccount = window.prompt("Neuen Account hinzufügen (z. B. \"Backtesting USDJPY\"):");
+          if (newAccount && newAccount.trim()) {
+            newAccount = newAccount.trim();
+            if (accountNames().indexOf(newAccount) === -1) {
+              state.lists.accounts.push({ name: newAccount, defaultSymbol: "", type: "r" });
+              persistLists();
+            }
+            state.filters.account = newAccount;
+            render();
+          }
+        } else if (action === "add-livemarkt-account") {
+          var newLm = window.prompt("Name des Livemarkt-Unterkontos (z. B. \"Alpha Capital 100k\"):");
+          if (!newLm || !newLm.trim()) return;
+          newLm = newLm.trim();
+          if (accountNames().indexOf(newLm) !== -1) { window.alert("Es gibt bereits einen Account mit diesem Namen."); return; }
+          var capStr = window.prompt("Startkapital in $ für \"" + newLm + "\":", "100000");
+          var cap = Number(capStr);
+          if (isNaN(cap)) cap = 0;
+          state.lists.accounts.push({ name: newLm, defaultSymbol: "", type: "usd", group: LIVEMARKT_GROUP, startingCapital: cap, withdrawals: [], riskModel: false });
+          persistLists();
+          state.filters.account = newLm;
+          render();
+        } else if (action === "toggle-account-manage") {
+          state.accountManageOpen = !state.accountManageOpen;
+          render();
+        } else if (action === "delete-account") {
+          var accName = el.getAttribute("data-account");
+          if (!window.confirm('Account "' + accName + '" aus der Auswahl entfernen? Gespeicherte Trades bleiben erhalten.')) return;
+          state.lists.accounts = state.lists.accounts.filter(function (a) { return a.name !== accName; });
+          persistLists();
+          if (state.filters.account === accName) state.filters.account = "all";
+          if (state.formSelections.account === accName) resetFormSelections();
+          state.compare.accounts = state.compare.accounts.filter(function (n) { return n !== accName; });
+          render();
+        } else if (action === "add-withdrawal") {
+          var wAccName = el.getAttribute("data-account");
+          var wAcc = findAccount(wAccName);
+          if (!wAcc) return;
+          var amtStr = window.prompt("Höhe der Auszahlung in $ für \"" + wAccName + "\":");
+          if (amtStr === null) return;
+          var amt = Number(amtStr);
+          if (isNaN(amt) || amt <= 0) { window.alert("Bitte einen gültigen Betrag eingeben."); return; }
+          var noteVal = window.prompt("Notiz (optional):", "") || "";
+          var dateVal = window.prompt("Datum der Auszahlung (JJJJ-MM-TT):", new Date().toISOString().slice(0, 10)) || new Date().toISOString().slice(0, 10);
+          wAcc.withdrawals = wAcc.withdrawals || [];
+          wAcc.withdrawals.push({ id: uid(), date: dateVal, amount: amt, note: noteVal });
+          persistLists();
+          render();
+        } else if (action === "delete-withdrawal") {
+          var dwAccName = el.getAttribute("data-account");
+          var dwAcc = findAccount(dwAccName);
+          if (!dwAcc) return;
+          var wid = el.getAttribute("data-wid");
+          dwAcc.withdrawals = (dwAcc.withdrawals || []).filter(function (w) { return w.id !== wid; });
+          persistLists();
+          render();
+        } else if (action === "chip-select") {
+          selectChip(el.getAttribute("data-field"), el.getAttribute("data-value"), el);
+        } else if (action === "chip-add") {
+          handleChipAdd(el.getAttribute("data-field"));
+        }
+      });
+    });
+
+    var calMonthSel = document.getElementById("cal-month-select");
+    var calYearSel = document.getElementById("cal-year-select");
+    if (calMonthSel && calYearSel) {
+      var onCalPick = function () {
+        state.calMonth = { y: Number(calYearSel.value), m: Number(calMonthSel.value) };
+        render();
+      };
+      calMonthSel.addEventListener("change", onCalPick);
+      calYearSel.addEventListener("change", onCalPick);
+    }
+    var calJump = document.getElementById("cal-jump");
+    if (calJump) {
+      calJump.addEventListener("change", function () {
+        if (!calJump.value) return;
+        var parts = calJump.value.split("-");
+        state.calMonth = { y: Number(parts[0]), m: Number(parts[1]) - 1 };
+        state.selectedDate = calJump.value;
+        state.formShot = null;
+        resetFormSelections();
+        state.scrollToDayPanel = true;
+        render();
+      });
+    }
+
+    document.querySelectorAll("[data-account-symbol-select]").forEach(function (sel) {
+      sel.addEventListener("change", function () {
+        var accName = sel.getAttribute("data-account-symbol-select");
+        var acc = findAccount(accName);
+        if (acc) { acc.defaultSymbol = sel.value; persistLists(); }
+      });
+    });
+
+    document.querySelectorAll("[data-account-capital]").forEach(function (inp) {
+      inp.addEventListener("change", function () {
+        var accName = inp.getAttribute("data-account-capital");
+        var acc = findAccount(accName);
+        if (acc) {
+          acc.startingCapital = Number(inp.value) || 0;
+          persistLists();
+          render();
+        }
+      });
+    });
+
+    document.querySelectorAll("[data-account-riskmodel]").forEach(function (inp) {
+      inp.addEventListener("change", function () {
+        var accName = inp.getAttribute("data-account-riskmodel");
+        var acc = findAccount(accName);
+        if (acc) {
+          acc.riskModel = inp.checked;
+          persistLists();
+          render();
+        }
+      });
+    });
+
+    var filterSymbolEl = document.getElementById("filter-symbol");
+    if (filterSymbolEl) {
+      filterSymbolEl.addEventListener("change", function () {
+        state.filters.symbol = filterSymbolEl.value;
+        render();
+      });
+    }
+    var filterSetupEl = document.getElementById("filter-setup");
+    if (filterSetupEl) {
+      filterSetupEl.addEventListener("change", function () {
+        state.filters.setup = filterSetupEl.value;
+        render();
+      });
+    }
+
+    var obsForm = document.getElementById("obs-settings-form");
+    if (obsForm) {
+      obsForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var s = {
+          owner: document.getElementById("s-owner").value.trim(),
+          repo: document.getElementById("s-repo").value.trim(),
+          branch: document.getElementById("s-branch").value.trim() || "main",
+          token: document.getElementById("s-token").value.trim(),
+          folder: document.getElementById("s-folder").value.trim().replace(/\/+$/, "")
+        };
+        persistSettings(s);
+        state.settings = s;
+        state.settingsOpen = false;
+        fetchTradesFromObsidian();
+      });
+    }
+
+    var dropzone = document.getElementById("dropzone");
+    var fileInput = document.getElementById("f-file");
+    if (dropzone) {
+      renderDropzone();
+      dropzone.addEventListener("click", function () { fileInput.click(); });
+      dropzone.addEventListener("paste", function (e) {
+        var items = (e.clipboardData && e.clipboardData.items) || [];
+        for (var i = 0; i < items.length; i++) {
+          if (items[i].type.indexOf("image/") === 0) {
+            var file = items[i].getAsFile();
+            readFileToDataUrl(file, function (dataUrl) {
+              state.formShot = dataUrl;
+              renderDropzone();
+            });
+            e.preventDefault();
+            return;
+          }
+        }
+      });
+    }
+    if (fileInput) {
+      fileInput.addEventListener("change", function (e) {
+        var file = e.target.files && e.target.files[0];
+        readFileToDataUrl(file, function (dataUrl) {
+          state.formShot = dataUrl;
+          renderDropzone();
+        });
+      });
+    }
+
+    var form = document.getElementById("trade-form");
+    if (form) {
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var errorEl = document.getElementById("form-error");
+        if (!state.formSelections.account) {
+          errorEl.innerHTML = '<div class="error-text">Bitte einen Account auswählen oder neu anlegen.</div>';
+          return;
+        }
+        var acc = findAccount(state.formSelections.account);
+        var isUsd = !!(acc && acc.type === "usd");
+        var rVal = 0, pnlVal = 0, commissionVal = 0;
+        if (isUsd) {
+          var pnlStr = document.getElementById("f-pnl").value;
+          if (pnlStr === "" || isNaN(pnlStr)) {
+            errorEl.innerHTML = '<div class="error-text">Bitte einen $-Betrag eingeben, z. B. 250 oder -120.</div>';
+            return;
+          }
+          pnlVal = Number(pnlStr);
+          var commissionStr = document.getElementById("f-commission").value;
+          if (commissionStr !== "" && !isNaN(commissionStr)) commissionVal = Number(commissionStr);
+        } else {
+          var rStr = document.getElementById("f-r").value;
+          if (rStr === "" || isNaN(rStr)) {
+            errorEl.innerHTML = '<div class="error-text">Bitte einen R-Wert eingeben, z. B. 1.5 oder -1.</div>';
+            return;
+          }
+          rVal = Number(rStr);
+        }
+        var id = uid();
+        var trade = {
+          id: id,
+          date: state.selectedDate,
+          symbol: (state.formSelections.symbol || "").toUpperCase(),
+          setup: state.formSelections.setup || "",
+          account: state.formSelections.account,
+          direction: "",
+          time: state.formSelections.time || "",
+          r: rVal,
+          pnl: pnlVal,
+          commission: commissionVal,
+          notes: document.getElementById("f-notes").value.trim(),
+          hasScreenshot: false,
+          screenshotPath: "",
+          createdAt: Date.now()
+        };
+        var submitBtn = form.querySelector('button[type="submit"]');
+        if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = "Speichere …"; }
+        var shotToUpload = state.formShot;
+        saveTradeToObsidian(trade, shotToUpload).then(function () {
+          if (shotToUpload) state.shotCache[trade.id] = shotToUpload;
+          state.trades.push(trade);
+          state.formShot = null;
+          state.saveError = "";
+          resetFormSelections();
+          render();
+        }).catch(function (e) {
+          errorEl.innerHTML = '<div class="error-text">' + esc((e && e.message) || String(e)) + "</div>";
+          if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = "+ Trade speichern"; }
+        });
+      });
+    }
+  }
+
+  // ---------- Init ----------
+  applyTheme();
+  render();
+  if (settingsReady()) fetchTradesFromObsidian();
+})();
+</script>
+
+
+</body></html>
